@@ -7,7 +7,6 @@ from db.repository import SqlRepository
 
 sqlRepository = SqlRepository()
 
-
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
