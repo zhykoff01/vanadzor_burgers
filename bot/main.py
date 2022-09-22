@@ -17,8 +17,8 @@ async def on_shutdown():
 
 @config.dp.message_handler()
 async def start(message: types.Message):
-    # if not sqlRepository.is_user_exist(message.from_user.id):
-    sqlRepository.save_user(message.from_user.id, message.from_user.username)
+    if not sqlRepository.is_user_exist(message.from_user.id):
+        sqlRepository.save_user(message.from_user.id, message.from_user.username)
     await message.answer(
         f'Suck some dick, {message.from_user.get_mention(as_html=True)}',
         parse_mode=types.ParseMode.HTML,
