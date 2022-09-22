@@ -1,6 +1,6 @@
 import psycopg2
 
-import config
+import db.config
 
 
 class SqlRepository:
@@ -9,7 +9,7 @@ class SqlRepository:
     def __init__(self) -> None:
         try:
             print('Connecting to the PostgreSQL database...')
-            self.conn = psycopg2.connect(config.DATABASE_URL, sslmode='require')
+            self.conn = psycopg2.connect(db.config.DATABASE_URL, sslmode='require')
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
 
