@@ -30,8 +30,8 @@ async def on_shutdown(dispatcher):
 
 
 @dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
+async def start(message: types.Message):
+    await message.answer('Hello')
 
 
 if __name__ == '__main__':
