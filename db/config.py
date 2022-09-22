@@ -1,15 +1,4 @@
-from configparser import ConfigParser
+from databases import Database
 
-
-def config(filename='db/database.ini', section='postgresql'):
-    parser = ConfigParser()
-    parser.read(filename)
-    db = {}
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception(f'Section {section} not found in the {filename} file')
-
-    return db
+database = Database('postgres://kbyqdyjvlbgtby:4733ea467695edd4d3341d2e2761b6c761b52e593cd9d1c94b657b83ec62e040@ec2-52'
+                    '-210-97-223.eu-west-1.compute.amazonaws.com:5432/dfvgjiu109718d')

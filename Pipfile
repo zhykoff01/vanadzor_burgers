@@ -8,6 +8,7 @@ flake8 = "*"
 aiogram = "*"
 psycopg2 = "*"
 python-dotenv = "*"
+databases = "*"
 
 [dev-packages]
 
