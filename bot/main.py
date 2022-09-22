@@ -7,18 +7,18 @@ from aiogram import types
 sqlRepository = SqlRepository()
 
 
-async def on_startup():
+async def on_startup(dispatcher):
     await config.bot.set_webhook(config.WEBHOOK_URL, drop_pending_updates=True)
 
 
-async def on_shutdown():
+async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
 @config.dp.message_handler()
 async def start(message: types.Message):
     if not sqlRepository.is_user_exist(message.from_user.id):
-        sqlRepository.save_user(message.from_user.id, message.from_user.username)
+        await sqlRepository.save_user(message.from_user.id, message.from_user.username)
     await message.answer(
         f'Suck some dick, {message.from_user.get_mention(as_html=True)}',
         parse_mode=types.ParseMode.HTML,

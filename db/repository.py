@@ -31,7 +31,7 @@ class SqlRepository:
             some_response = cur.fetchone()
             return len(some_response) > 0
         except (Exception, psycopg2.DatabaseError) as error:
-            return error
+            print(error)
         finally:
             cur.close()
 
