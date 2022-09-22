@@ -7,11 +7,11 @@ from aiogram import types
 sqlRepository = SqlRepository()
 
 
-async def on_startup(dispatcher):
+async def on_startup():
     await config.bot.set_webhook(config.WEBHOOK_URL, drop_pending_updates=True)
 
 
-async def on_shutdown(dispatcher):
+async def on_shutdown():
     await config.bot.delete_webhook()
 
 
