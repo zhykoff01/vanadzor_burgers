@@ -3,6 +3,9 @@ import os
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from aiogram import Bot, types
+from db.repository import SqlRepository
+
+sqlRepository = SqlRepository()
 
 
 TOKEN = os.getenv('BOT_TOKEN')
@@ -31,7 +34,12 @@ async def on_shutdown(dispatcher):
 
 @dp.message_handler()
 async def start(message: types.Message):
-    await message.answer('Hello')
+    if not sqlRepository.is_user_exist(message.from_user.id):
+        sqlRepository.save_user(message.from_user.id, message.from_user.username)
+    await message.answer(
+        f'Suck some dick, {message.from_user.get_mention(as_html=True)}',
+        parse_mode=types.ParseMode.HTML,
+    )
 
 
 if __name__ == '__main__':
