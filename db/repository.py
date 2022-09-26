@@ -9,7 +9,11 @@ class SqlRepository:
     def __init__(self) -> None:
         try:
             print('Connecting to the PostgreSQL database...')
-            self.conn = psycopg2.connect(db.config.DATABASE_URL, sslmode='require')
+            self.conn = psycopg2.connect(
+                db.config.DATABASE_URL,
+                options="-c search_path=VB",
+                sslmode="require",
+            )
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
 
