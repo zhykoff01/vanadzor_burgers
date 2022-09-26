@@ -33,7 +33,7 @@ class SqlRepository:
         try:
             cur.execute('''SELECT * FROM users WHERE user_id = %s''', [int(user_id)])
             some_response = cur.fetchone()
-            return len(some_response) > 0
+            return some_response is not None and len(some_response) > 0
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
