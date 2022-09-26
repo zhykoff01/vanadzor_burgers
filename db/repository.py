@@ -39,10 +39,11 @@ class SqlRepository:
         finally:
             cur.close()
 
-    def save_user(self, user_id, username):
+    def save_user(self, user_id, username, language_code):
         cur = self.conn.cursor()
         try:
-            cur.execute('''INSERT INTO users (user_id, username) values (%s,%s)''', [int(user_id), str(username)])
+            cur.execute('''INSERT INTO users (user_id, username, language_code) values (%s,%s,%s)''',
+                        [int(user_id), str(username), str(language_code)])
             self.conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
