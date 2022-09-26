@@ -12,6 +12,7 @@ class SqlRepository:
             self.conn = psycopg2.connect(
                 db.config.DATABASE_URL,
                 sslmode="require",
+                options="-c search_path=vb"
             )
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
