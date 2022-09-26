@@ -10,12 +10,8 @@ class SqlRepository:
         try:
             print('Connecting to the PostgreSQL database...')
             self.conn = psycopg2.connect(
-                host="ec2-52-210-97-223.eu-west-1.compute.amazonaws.com",
-                port="5432",
-                user="kbyqdyjvlbgtby",
-                password="4733ea467695edd4d3341d2e2761b6c761b52e593cd9d1c94b657b83ec62e040",
-                database="dfvgjiu109718d",
-                options="-c search_path=VB"
+                db.config.DATABASE_URL,
+                sslmode="require",
             )
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
