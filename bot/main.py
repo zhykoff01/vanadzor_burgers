@@ -1,10 +1,17 @@
 import logging
 import config
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from aiogram.utils.executor import start_webhook
 from aiogram import types
 
 sqlRepository = SqlRepository()
+
+
+class UserState(StatesGroup):
+    order = State()
+    address = State()
 
 
 async def on_startup(dispatcher):
@@ -15,20 +22,28 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-@config.dp.message_handler()
+@config.dp.message_handler(commands=['start'])
 async def start(message: types.Message):
     if not sqlRepository.is_user_exist(message.from_user.id):
         sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.language_code == 'ru':
         await message.answer(
-            f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
-            parse_mode=types.ParseMode.HTML,
+            f'Привет, {message.from_user.get_mention}, у нас ты можешь заказать самые вкусные бургеры',
         )
     elif message.from_user.language_code == 'en':
         await message.answer(
-            f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
-            parse_mode=types.ParseMode.HTML,
+            f'Hello, {message.from_user.get_mention}, here you can order the most delicious burgers',
         )
+
+
+@config.dp.message_handler()
+async def main_menu(message: types.Message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton('Make order')
+    btn2 = types.KeyboardButton('Contacts')
+    btn3 = types.KeyboardButton('Info')
+    markup.add(btn1, btn2, btn3)
+    config.dp.send_message(message.chat.id, reply_markup=markup)
 
 
 if __name__ == '__main__':
