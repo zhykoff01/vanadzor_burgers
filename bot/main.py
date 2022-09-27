@@ -10,6 +10,7 @@ sqlRepository = SqlRepository()
 
 
 class UserState(StatesGroup):
+    main_menu = State()
     order = State()
     address = State()
 
@@ -28,15 +29,16 @@ async def start(message: types.Message):
         sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.language_code == 'ru':
         await message.answer(
-            f'Привет, {message.from_user.get_mention}, у нас ты можешь заказать самые вкусные бургеры',
+            f'Привет, {message.from_user.username}, у нас ты можешь заказать самые вкусные бургеры',
         )
     elif message.from_user.language_code == 'en':
         await message.answer(
-            f'Hello, {message.from_user.get_mention}, here you can order the most delicious burgers',
+            f'Hello, {message.from_user.username}, here you can order the most delicious burgers',
         )
+    await UserState.main_menu.set()
 
 
-@config.dp.message_handler()
+@config.dp.message_handler(state=UserState.main_menu)
 async def main_menu(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton('Make order')
