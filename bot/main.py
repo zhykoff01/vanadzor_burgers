@@ -29,11 +29,13 @@ async def start(message: types.Message):
         sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.language_code == 'ru':
         await message.answer(
-            f'Привет, {message.from_user.username}, у нас ты можешь заказать самые вкусные бургеры',
+            f'Привет, {message.from_user.get_mention()}, у нас ты можешь заказать самые вкусные бургеры',
+            parse_mode=types.ParseMode.HTML,
         )
     elif message.from_user.language_code == 'en':
         await message.answer(
-            f'Hello, {message.from_user.username}, here you can order the most delicious burgers',
+            f'Hello, {message.from_user.get_mention()}, here you can order the most delicious burgers',
+            parse_mode=types.ParseMode.HTML,
         )
     await UserState.main_menu.set()
 
