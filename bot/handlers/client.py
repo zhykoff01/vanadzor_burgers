@@ -1,6 +1,9 @@
 import types
 from aiogram import types, Dispatcher
-from bot.main import sqlRepository
+from db.repository import SqlRepository
+
+
+sqlRepository = SqlRepository()
 
 
 async def start(message: types.Message):

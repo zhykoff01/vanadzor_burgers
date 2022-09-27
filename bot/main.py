@@ -1,10 +1,8 @@
 import logging
 import config
-from db.repository import SqlRepository
 from aiogram.utils.executor import start_webhook
-from handlers import client, admin, other
+from handlers import client
 from config import dp
-sqlRepository = SqlRepository()
 
 
 async def on_startup(dispatcher):
