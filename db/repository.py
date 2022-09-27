@@ -64,7 +64,7 @@ class SqlRepository:
         finally:
             cur.close()
 
-    async def extract_dishes(self, section):
+    async def extract_pizza(self, section='Pizza'):
         cur = self.conn.cursor()
         try:
             cur.execute('''SELECT * FROM menu WHERE section = %s''', str(section))

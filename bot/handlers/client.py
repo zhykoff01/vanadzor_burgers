@@ -34,7 +34,7 @@ async def help_command(message: types.Message):
 
 
 async def send_menu(message: types.Message):
-    some_response = await sqlRepository.extract_dishes(message.text)
+    some_response = await sqlRepository.extract_pizza()
     for res in some_response:
         await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[2]}\nPrice: {res[-1]}')
 
