@@ -17,7 +17,7 @@ class SqlRepository:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
 
-    def print_version(self):
+    async def print_version(self):
         cur = self.conn.cursor()
         try:
             cur.execute('SELECT version()')
@@ -28,7 +28,7 @@ class SqlRepository:
         finally:
             cur.close()
 
-    def is_user_exist(self, user_id):
+    async def is_user_exist(self, user_id):
         cur = self.conn.cursor()
         try:
             cur.execute('''SELECT * FROM users WHERE user_id = %s''', [int(user_id)])
@@ -39,7 +39,7 @@ class SqlRepository:
         finally:
             cur.close()
 
-    def save_user(self, user_id, username, language_code):
+    async def save_user(self, user_id, username, language_code):
         cur = self.conn.cursor()
         try:
             cur.execute('''INSERT INTO users (user_id, username, language_code) values (%s,%s,%s)''',
