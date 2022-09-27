@@ -26,7 +26,7 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-@config.dp.message_handler(commands=['start'])
+@config.dp.message_handler(commands=['start', 'restart'])
 async def start(message: types.Message):
     await UserState.main_menu.set()
     if not sqlRepository.is_user_exist(message.from_user.id):
