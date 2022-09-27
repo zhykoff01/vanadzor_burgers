@@ -55,6 +55,7 @@ async def main_menu(message: types.Message, state: FSMContext):
     if message == 'Make order':
         await state.update_data(msg=message.text)
         await UserState.make_order.set()
+        await message.answer('suck some dick')
     elif message == 'Contacts':
         await state.update_data(msg=message.text)
         await UserState.contacts.set()
