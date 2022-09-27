@@ -4,6 +4,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from bot.config import ID
 from db.repository import SqlRepository
+from bot.keyboards import admin_kb
 
 sqlRepository = SqlRepository()
 
@@ -22,6 +23,11 @@ async def cancel_handler(message: types.Message, state: FSMContext):
             return
         await state.finish()
         await message.reply('OK')
+
+
+async def admin(message: types.Message):
+    if message.from_user.id == ID:
+        await message.reply('Admin panel', reply_markup=admin_kb.button_case_admin)
 
 
 async def add(message: types.Message):
@@ -65,6 +71,7 @@ async def load_price(message: types.Message, state: FSMContext):
 
 def register_handler_admin(dp: Dispatcher):
     dp.register_message_handler(cancel_handler, state='*', commands='Cancel')
+    dp.register_message_handler(admin, commands='Admin')
     dp.register_message_handler(cancel_handler, Text(equals='Cancel', ignore_case=True), state='*')
     dp.register_message_handler(add, commands='Add', state=None)
     dp.register_message_handler(load_photo, content_types='photo', state=FSMAdmin.photo)
