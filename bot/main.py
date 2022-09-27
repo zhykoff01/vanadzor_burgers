@@ -10,7 +10,10 @@ sqlRepository = SqlRepository()
 
 
 class UserState(StatesGroup):
+    make_order = State()
     main_menu = State()
+    contacts = State()
+    info = State()
     order = State()
     address = State()
 
@@ -44,9 +47,20 @@ async def start(message: types.Message):
             parse_mode=types.ParseMode.HTML,
             reply_markup=markup
         )
+    await UserState.main_menu.set()
 
 
-@config.dp.message_handler(commands=['Make order'])
+@config.dp.message_handler(state=UserState.main_menu)
+async def main_menu(message: types.Message):
+    if message == 'Make order':
+        await UserState.make_order.set()
+    elif message == 'Contacts':
+        await UserState.contacts.set()
+    elif message == 'Info':
+        await UserState.info.set()
+
+
+@config.dp.message_handler(state=UserState.make_order)
 async def make_order(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton('Burgers')
@@ -54,7 +68,8 @@ async def make_order(message: types.Message):
     btn3 = types.KeyboardButton('Salads')
     btn4 = types.KeyboardButton('Drinks')
     btn5 = types.KeyboardButton('My order')
-    markup.add(btn1, btn2, btn3, btn4, btn5)
+    btn6 = types.KeyboardButton('Main menu')
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
     await message.answer(
         'Choose dishes',
         reply_markup=markup
