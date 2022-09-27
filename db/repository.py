@@ -55,9 +55,21 @@ class SqlRepository:
         cur = self.conn.cursor()
         try:
             async with state.proxy() as data:
-                cur.execute('''INSERT INTO menu (img, name, description, price) values (%s, %s, %s, %s)''',
-                            [str(data['photo']), str(data['name']), str(data['description']), int(data['price'])])
+                cur.execute('''INSERT INTO menu (img, name, section, description, price) values (%s, %s, %s, %s, %s)''',
+                            [str(data['photo']), str(data['name']), str(data['section']), str(data['description']), int(data['price'])])
             self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            self.conn.rollback()
+        finally:
+            cur.close()
+
+    async def extract_dishes(self, section):
+        cur = self.conn.cursor()
+        try:
+            cur.execute('''SELECT * FROM menu WHERE section = %s''', str(section))
+            some_response = cur.fetchall()
+            return some_response
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             self.conn.rollback()

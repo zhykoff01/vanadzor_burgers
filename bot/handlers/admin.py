@@ -6,12 +6,14 @@ from bot.config import ID
 from db.repository import SqlRepository
 from bot.keyboards import admin_kb
 
+
 sqlRepository = SqlRepository()
 
 
 class FSMAdmin(StatesGroup):
     photo = State()
     name = State()
+    section = State()
     description = State()
     price = State()
 
@@ -49,6 +51,14 @@ async def load_name(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['name'] = message.text
         await FSMAdmin.next()
+        await message.reply('Enter section')
+
+
+async def load_section(message: types.Message, state: FSMContext):
+    if message.from_user.id == ID:
+        async with state.proxy() as data:
+            data['section'] = message.text
+        await FSMAdmin.next()
         await message.reply('Enter description')
 
 
@@ -76,5 +86,6 @@ def register_handler_admin(dp: Dispatcher):
     dp.register_message_handler(add, commands='Add', state=None)
     dp.register_message_handler(load_photo, content_types='photo', state=FSMAdmin.photo)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
+    dp.register_message_handler(load_section, state=FSMAdmin.section)
     dp.register_message_handler(load_description, state=FSMAdmin.description)
     dp.register_message_handler(load_price, state=FSMAdmin.price)

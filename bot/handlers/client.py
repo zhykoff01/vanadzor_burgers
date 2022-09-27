@@ -1,6 +1,7 @@
 import types
 from aiogram import types, Dispatcher
 from db.repository import SqlRepository
+from bot.config import bot
 
 
 sqlRepository = SqlRepository()
@@ -30,6 +31,13 @@ async def help_command(message: types.Message):
         await message.answer(
             f'Hello, here you can order the most delicious burgers in Vanadzor'
         )
+
+
+async def send_menu(message: types.Message):
+    if message.from_user == 'Pizza':
+        some_response = sqlRepository.extract_dishes(message.from_user)
+        for res in await some_response:
+            await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[2]}\nPrice: {res[-1]}')
 
 
 def register_handler_client(dp: Dispatcher):
