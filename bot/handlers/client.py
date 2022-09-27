@@ -8,7 +8,7 @@ sqlRepository = SqlRepository()
 
 async def start_command(message: types.Message):
     if not sqlRepository.is_user_exist(message.from_user.id):
-        sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
+        await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.language_code == 'ru':
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',

@@ -50,3 +50,16 @@ class SqlRepository:
             self.conn.rollback()
         finally:
             cur.close()
+
+    async def save_dishes(self, state):
+        cur = self.conn.cursor()
+        try:
+            async with state.proxy() as data:
+                cur.execute('''INSERT INTO menu (img, name, description, price) values (%s, %s, %s, %s)''',
+                            [str(data['photo']), str(data['name']), str(data['description']), int(data['price'])])
+            self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            self.conn.rollback()
+        finally:
+            cur.close()

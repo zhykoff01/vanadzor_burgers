@@ -3,6 +3,9 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from bot.config import ID
+from db.repository import SqlRepository
+
+sqlRepository = SqlRepository()
 
 
 class FSMAdmin(StatesGroup):
@@ -55,7 +58,7 @@ async def load_price(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
             data['price'] = int(message.text)
-
+        await sqlRepository.save_dishes(state)
         await state.finish()
 
 
