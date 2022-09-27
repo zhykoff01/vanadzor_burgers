@@ -6,7 +6,7 @@ from db.repository import SqlRepository
 sqlRepository = SqlRepository()
 
 
-async def start(message: types.Message):
+async def start_command(message: types.Message):
     if not sqlRepository.is_user_exist(message.from_user.id):
         sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.language_code == 'ru':
@@ -21,5 +21,17 @@ async def start(message: types.Message):
         )
 
 
+async def help_command(message: types.Message):
+    if message.from_user.language_code == 'ru':
+        await message.answer(
+            f'Привет, в этом боте ты можешь заказать самые вкусные бургеры в Ванадзоре'
+        )
+    elif message.from_user.language_code == 'en':
+        await message.answer(
+            f'Hello, here you can order the most delicious burgers in Vanadzor'
+        )
+
+
 def register_handler_client(dp: Dispatcher):
-    dp.register_message_handler(start, commands=['start'])
+    dp.register_message_handler(start_command, commands=['start'])
+    dp.register_message_handler(help_command, commands=['help'])
