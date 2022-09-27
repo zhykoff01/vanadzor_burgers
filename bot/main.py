@@ -28,6 +28,7 @@ async def on_shutdown(dispatcher):
 
 @config.dp.message_handler(commands=['start'])
 async def start(message: types.Message):
+    await UserState.main_menu.set()
     if not sqlRepository.is_user_exist(message.from_user.id):
         sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -47,7 +48,6 @@ async def start(message: types.Message):
             parse_mode=types.ParseMode.HTML,
             reply_markup=markup
         )
-    await UserState.main_menu.set()
 
 
 @config.dp.message_handler(state=UserState.main_menu)
