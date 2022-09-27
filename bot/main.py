@@ -41,7 +41,7 @@ async def start(message: types.Message):
 
 
 @config.dp.message_handler(state=UserState.main_menu)
-async def main_menu(message: types.Message):
+async def main_menu(message: types.Message, state: FSMContext):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton('Make order')
     btn2 = types.KeyboardButton('Contacts')
