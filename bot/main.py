@@ -10,8 +10,8 @@ sqlRepository = SqlRepository()
 
 
 class UserState(StatesGroup):
-    make_order = State()
     main_menu = State()
+    make_order = State()
     contacts = State()
     info = State()
     order = State()
@@ -51,12 +51,15 @@ async def start(message: types.Message):
 
 
 @config.dp.message_handler(state=UserState.main_menu)
-async def main_menu(message: types.Message):
+async def main_menu(message: types.Message, state: FSMContext):
     if message == 'Make order':
+        await state.update_data(msg=message.text)
         await UserState.make_order.set()
     elif message == 'Contacts':
+        await state.update_data(msg=message.text)
         await UserState.contacts.set()
     elif message == 'Info':
+        await state.update_data(msg=message.text)
         await UserState.info.set()
 
 
