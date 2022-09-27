@@ -59,7 +59,7 @@ async def load_price(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['price'] = int(message.text)
         await sqlRepository.save_dishes(state)
-        await message.reply(f'Saved successfully: {state.proxy()}')
+        await message.reply(f'Saved successfully: {data}')
         await state.finish()
 
 
