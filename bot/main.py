@@ -2,8 +2,8 @@ import logging
 import config
 from db.repository import SqlRepository
 from aiogram.utils.executor import start_webhook
-from aiogram import types
-
+from handlers import client, admin, other
+from config import dp
 sqlRepository = SqlRepository()
 
 
@@ -15,21 +15,7 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-@config.dp.message_handler(commands=['start'])
-async def start(message: types.Message):
-    if not sqlRepository.is_user_exist(message.from_user.id):
-        sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
-    if message.from_user.language_code == 'ru':
-        await message.answer(
-            f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
-            parse_mode=types.ParseMode.HTML,
-        )
-    elif message.from_user.language_code == 'en':
-        await message.answer(
-            f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
-            parse_mode=types.ParseMode.HTML,
-        )
-
+client.register_handler_client(dp)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
