@@ -45,7 +45,7 @@ async def main_menu(message: types.Message):
     btn2 = types.KeyboardButton('Contacts')
     btn3 = types.KeyboardButton('Info')
     markup.add(btn1, btn2, btn3)
-    config.dp.send_message(message.chat.id, reply_markup=markup)
+    config.bot.send_message(message.chat.id, reply_markup=markup)
 
 
 if __name__ == '__main__':
