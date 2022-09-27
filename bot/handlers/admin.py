@@ -54,7 +54,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 
 def register_handler_admin(dp: Dispatcher):
     dp.register_message_handler(add, commands='Add', state=None)
-    dp.register_message_handler(load_photo, state=FSMAdmin.photo)
+    dp.register_message_handler(load_photo, content_types='photo', state=FSMAdmin.photo)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_description, state=FSMAdmin.description)
     dp.register_message_handler(load_price, state=FSMAdmin.price)
