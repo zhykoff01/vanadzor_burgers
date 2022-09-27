@@ -46,6 +46,21 @@ async def start(message: types.Message):
         )
 
 
+@config.dp.message_handler(commands=['Make order'])
+async def make_order(message: types.Message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton('Burgers')
+    btn2 = types.KeyboardButton('Pizza')
+    btn3 = types.KeyboardButton('Salads')
+    btn4 = types.KeyboardButton('Drinks')
+    btn5 = types.KeyboardButton('My order')
+    markup.add(btn1, btn2, btn3, btn4, btn5)
+    await message.answer(
+        'Choose dishes',
+        reply_markup=markup
+    )
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     start_webhook(
