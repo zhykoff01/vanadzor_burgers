@@ -40,6 +40,6 @@ async def send_menu(message: types.Message):
 
 
 def register_handler_client(dp: Dispatcher):
+    dp.register_message_handler(send_menu, commands=['pizza'])
     dp.register_message_handler(start_command, commands=['start'])
     dp.register_message_handler(help_command, commands=['help'])
-    dp.register_message_handler(send_menu, commands=['pizza'])

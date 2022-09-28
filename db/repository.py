@@ -72,7 +72,7 @@ class SqlRepository:
     async def extract_pizza(self):
         cur = self.conn.cursor()
         try:
-            cur.execute('''SELECT * FROM menu WHERE section = "Pizza"''')
+            cur.execute("""SELECT * FROM menu WHERE section = 'Pizza'""")
             some_response = cur.fetchall()
             return some_response
         except (Exception, psycopg2.DatabaseError) as error:
