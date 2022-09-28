@@ -36,10 +36,10 @@ async def help_command(message: types.Message):
 async def send_menu(message: types.Message):
     some_response = await sqlRepository.extract_pizza()
     for res in some_response:
-        await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[2]}\nPrice: {res[-1]}')
+        await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[3]}\nPrice: {res[-1]}')
 
 
 def register_handler_client(dp: Dispatcher):
-    dp.register_message_handler(send_menu, commands=['pizza'])
     dp.register_message_handler(start_command, commands=['start'])
     dp.register_message_handler(help_command, commands=['help'])
+    dp.register_message_handler(send_menu, commands=['pizza'])
