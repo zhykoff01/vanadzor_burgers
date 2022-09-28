@@ -20,7 +20,7 @@ class SqlRepository:
     async def print_version(self):
         cur = self.conn.cursor()
         try:
-            cur.execute('SELECT version()')
+            cur.execute("""SELECT version()""")
             db_version = cur.fetchone()
             print(db_version)
         except (Exception, psycopg2.DatabaseError) as error:
@@ -31,7 +31,7 @@ class SqlRepository:
     async def is_user_exist(self, user_id):
         cur = self.conn.cursor()
         try:
-            cur.execute('''SELECT * FROM users WHERE user_id = %s''', [int(user_id)])
+            cur.execute("""SELECT * FROM users WHERE user_id = %s""", [int(user_id)])
             some_response = cur.fetchone()
             return some_response is not None and len(some_response) > 0
         except (Exception, psycopg2.DatabaseError) as error:
@@ -43,7 +43,7 @@ class SqlRepository:
         cur = self.conn.cursor()
         try:
             cur.execute(
-                '''INSERT INTO users (user_id, username, language_code) values (%s,%s,%s)''',
+                """INSERT INTO users (user_id, username, language_code) values (%s,%s,%s)""",
                 [int(user_id), str(username), str(language_code)]
             )
             self.conn.commit()
@@ -58,7 +58,7 @@ class SqlRepository:
         try:
             async with state.proxy() as data:
                 cur.execute(
-                    '''INSERT INTO menu (img, name, section, description, price) values (%s, %s, %s, %s, %s)''',
+                    """INSERT INTO menu (img, name, section, description, price) values (%s, %s, %s, %s, %s)""",
                     [str(data['photo']), str(data['name']), str(data['section']), str(data['description']),
                      int(data['price'])]
                 )
