@@ -18,7 +18,7 @@ async def start_command(message: types.Message):
     btn3_ru = types.KeyboardButton('Информация')
     markup_en.add(btn1_en, btn2_en, btn3_en)
     markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
-    if not await sqlRepository.is_user_exist(message.from_user.id):
+    if not sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
     if message.from_user.id == 'ru':
         await message.answer(
