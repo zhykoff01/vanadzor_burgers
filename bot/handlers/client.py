@@ -18,15 +18,15 @@ async def start_command(message: types.Message):
     btn3_ru = types.KeyboardButton('Информация')
     markup_en.add(btn1_en, btn2_en, btn3_en)
     markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
-    if not await sqlRepository.is_user_exist(message.from_user.id):
+    if not sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
-    if await message.from_user.id == 'ru':
+    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
             parse_mode=types.ParseMode.HTML,
             reply_markup=markup_ru,
         )
-    elif await message.from_user.id == 'en':
+    elif sqlRepository.user_language_code(message.from_user.id) == 'en':
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
@@ -35,11 +35,11 @@ async def start_command(message: types.Message):
 
 
 async def help_command(message: types.Message):
-    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Привет, в этом боте ты можешь заказать самые вкусные бургеры в Ванадзоре'
         )
-    elif await sqlRepository.user_language_code(message.from_user.id) == 'en':
+    elif sqlRepository.user_language_code(message.from_user.id) == 'en':
         await message.answer(
             f'Hello, here you can order the most delicious burgers in Vanadzor'
         )
@@ -56,12 +56,12 @@ async def menu(message: types.Message):
     btn3_ru = types.KeyboardButton('Напитки')
     markup_en.add(btn1_en, btn2_en, btn3_en)
     markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
-    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Выбери категорию',
             reply_markup=markup_ru,
         )
-    if await sqlRepository.user_language_code(message.from_user.id) == 'en':
+    if sqlRepository.user_language_code(message.from_user.id) == 'en':
         await message.answer(
             f'Choose a category',
             reply_markup=markup_en,
