@@ -20,13 +20,13 @@ async def start_command(message: types.Message):
     markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
     if not await sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
-    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if await message.from_user.id == 'ru':
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
             parse_mode=types.ParseMode.HTML,
             reply_markup=markup_ru,
         )
-    elif await sqlRepository.user_language_code(message.from_user.id) == 'en':
+    elif await message.from_user.id == 'en':
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
