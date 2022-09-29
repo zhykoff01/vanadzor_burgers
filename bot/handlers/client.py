@@ -9,7 +9,8 @@ sqlRepository = SqlRepository()
 
 
 async def start_command(message: types.Message):
-    markup_en, markup_ru = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup_ru = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1_en = types.KeyboardButton('Make order')
     btn2_en = types.KeyboardButton('Geo')
     btn3_en = types.KeyboardButton('Info')
@@ -24,11 +25,13 @@ async def start_command(message: types.Message):
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
             parse_mode=types.ParseMode.HTML,
+            reply_markup=markup_ru,
         )
     elif message.from_user.language_code == 'en':
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
+            reply_markup=markup_en,
         )
 
 
