@@ -1,5 +1,6 @@
 import types
 from aiogram import types, Dispatcher
+from aiogram.utils.callback_data import CallbackData
 from db.repository import SqlRepository
 from bot.config import bot
 
@@ -20,6 +21,12 @@ async def start_command(message: types.Message):
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
         )
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton('Make order')
+    btn2 = types.KeyboardButton('Geo')
+    btn3 = types.KeyboardButton('Info')
+    markup.add(btn1, btn2, btn3)
+    bot.send_message(message.chat.id, text='', reply_markup=markup)
 
 
 async def help_command(message: types.Message):
@@ -34,7 +41,7 @@ async def help_command(message: types.Message):
 
 
 async def send_menu(message: types.Message):
-    some_response = await sqlRepository.extract_pizza()
+    some_response = await sqlRepository.extract_menu(message)
     for res in some_response:
         await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[3]}\nPrice: {res[-1]}')
 
