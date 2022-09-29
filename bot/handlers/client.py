@@ -26,7 +26,7 @@ async def start_command(message: types.Message):
     btn2 = types.KeyboardButton('Geo')
     btn3 = types.KeyboardButton('Info')
     markup.add(btn1, btn2, btn3)
-    bot.send_message(message.chat.id, text='', reply_markup=markup)
+    bot.send_message(message.chat.id, text='Main menu', reply_markup=markup)
 
 
 async def help_command(message: types.Message):
