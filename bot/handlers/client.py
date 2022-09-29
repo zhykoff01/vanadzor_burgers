@@ -24,13 +24,11 @@ async def start_command(message: types.Message):
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, у нас ты можешь заказать самые вкусные бургеры',
             parse_mode=types.ParseMode.HTML,
-            reply_markup=markup_ru
         )
     elif message.from_user.language_code == 'en':
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
-            reply_markup=markup_en
         )
 
 
