@@ -68,6 +68,18 @@ async def menu(message: types.Message):
         )
 
 
+async def burgers(message: types.Message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton('Cheeseburger')
+    btn2 = types.KeyboardButton('Chickenburger')
+    btn3 = types.KeyboardButton('BigMac')
+    markup.add(btn1, btn2, btn3)
+    await message.answer(
+        f'Choose a burger',
+        reply_markup=markup
+    )
+
+
 async def send_menu(message: types.Message):
     some_response = await sqlRepository.extract_menu(message)
     for res in some_response:
@@ -78,4 +90,5 @@ def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=['start'])
     dp.register_message_handler(help_command, commands=['help'])
     dp.register_message_handler(menu, lambda message: 'Make order' in message.text)
+    dp.register_message_handler(burgers, lambda message: 'Burgers' or 'Бургеры' in message.text)
     dp.register_message_handler(send_menu, commands=['pizza'])
