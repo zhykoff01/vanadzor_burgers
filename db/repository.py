@@ -31,7 +31,10 @@ class SqlRepository:
     async def is_user_exist(self, user_id):
         cur = self.conn.cursor()
         try:
-            cur.execute("""SELECT * FROM users WHERE user_id = %s""", [int(user_id)])
+            cur.execute(
+                """SELECT * FROM users WHERE user_id = %s""",
+                [int(user_id)]
+            )
             some_response = cur.fetchone()
             return some_response is not None and len(some_response) > 0
         except (Exception, psycopg2.DatabaseError) as error:
@@ -50,6 +53,20 @@ class SqlRepository:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             self.conn.rollback()
+        finally:
+            cur.close()
+
+    async def user_language_code(self, user_id):
+        cur = self.conn.cursor()
+        try:
+            cur.execute(
+                """SELECT language_code FROM users WHERE user_id = %s""",
+                [int(user_id)]
+            )
+            language_code = cur.fetchone()
+            return language_code
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
         finally:
             cur.close()
 
