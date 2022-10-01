@@ -94,8 +94,8 @@ async def send_menu(message: types.Message):
 def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=['start'])
     dp.register_message_handler(help_command, commands=['help'])
-    dp.register_message_handler(menu, lambda message: 'Make order' == message.text)
-    dp.register_message_handler(burgers, lambda message: 'Burgers' == message.text)
+    dp.register_message_handler(menu, lambda message: ('Make order', 'Сделать заказ').__contains__(message.text))
+    dp.register_message_handler(burgers, lambda message: ('Burgers', 'Бургеры').__contains__(message.text))
     dp.register_message_handler(
         send_menu, lambda message: ('Cheeseburger', 'Chickenburger', 'BigMac').__contains__(message.text)
     )
