@@ -84,8 +84,8 @@ class SqlRepository:
         cur = self.conn.cursor()
         try:
             cur.execute("""SELECT * FROM menu WHERE name = '%s'""", str(dish))
-            dish = cur.fetchall()
-            return dish
+            dishes = cur.fetchall()
+            return dishes
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             self.conn.rollback()
