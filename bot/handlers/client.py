@@ -81,9 +81,14 @@ async def burgers(message: types.Message):
 
 
 async def send_menu(message: types.Message):
-    some_response = await sqlRepository.extract_menu(message)
-    for res in some_response:
-        await bot.send_photo(message.from_user.id, res[0], f'{res[1]}\nDescription: {res[3]}\nPrice: {res[-1]}')
+    dish = await sqlRepository.extract_menu(message)
+    await message.answer(f'{dish[0]}\n{dish[1]}\n{dish[3]}\n{dish[4]}')
+
+
+# async def send_menu(message: types.Message):
+#     some_response = await sqlRepository.extract_menu(message)
+#     for res in some_response:
+#         await bot.send_photo(message.from_user.id, res[1], f'{res[2]}\nDescription: {res[3]}\nPrice: {res[-1]}')
 
 
 def register_handler_client(dp: Dispatcher):
@@ -91,4 +96,7 @@ def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(help_command, commands=['help'])
     dp.register_message_handler(menu, lambda message: 'Make order' == message.text)
     dp.register_message_handler(burgers, lambda message: 'Burgers' == message.text)
-    dp.register_message_handler(send_menu, commands=['pizza'])
+    dp.register_message_handler(
+        send_menu, lambda message: ('Cheeseburger', 'Chickenburger', 'BigMac').__contains__(message.text)
+    )
+    # dp.register_message_handler(send_menu, commands=['pizza'])

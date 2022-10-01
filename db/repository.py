@@ -80,12 +80,12 @@ class SqlRepository:
         finally:
             cur.close()
 
-    async def extract_menu(self, dishes):
+    async def extract_menu(self, dish):
         cur = self.conn.cursor()
         try:
-            cur.execute("""SELECT * FROM menu WHERE section = %s""", str(dishes))
-            some_response = cur.fetchall()
-            return some_response
+            cur.execute("""SELECT * FROM menu WHERE name = %s""", str(dish))
+            dish = cur.fetchall()
+            return dish
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             self.conn.rollback()
