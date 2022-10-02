@@ -85,7 +85,8 @@ async def send_menu(message: types.Message):
     # btn1 = types.InlineKeyboardButton('Add')
     # btn2 = types.InlineKeyboardButton('Delete')
     # markup_en.add(btn1, btn2)
-    await message.answer(dishes[0], dishes[1], dishes[3], dishes[4])  # , reply_markup=markup_en)
+    # await message.answer(dishes[0], dishes[1], dishes[3], dishes[4], reply_markup=markup_en)
+    await message.answer(dishes)
 
 
 # async def send_menu(message: types.Message):
