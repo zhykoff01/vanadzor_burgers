@@ -81,12 +81,11 @@ async def burgers(message: types.Message):
 
 async def send_menu(message: types.Message):
     dishes = await sqlRepository.extract_menu(message.text)
-    # markup_en = types.InlineKeyboardMarkup()
-    # btn1 = types.InlineKeyboardButton('Add')
-    # btn2 = types.InlineKeyboardButton('Delete')
-    # markup_en.add(btn1, btn2)
-    # await message.answer(dishes[0], dishes[1], dishes[3], dishes[4], reply_markup=markup_en)
-    await message.answer_photo(dishes[1], f'{dishes[2]}\n{dishes[4]}\n{dishes[5]}')
+    markup_en = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton('Add')
+    btn2 = types.InlineKeyboardButton('Delete')
+    markup_en.add(btn1, btn2)
+    await message.answer_photo(dishes[1], f'{dishes[2]}\n{dishes[4]}\n{dishes[5]}', reply_markup=markup_en)
 
 
 # async def send_menu(message: types.Message):
