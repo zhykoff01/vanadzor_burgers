@@ -25,7 +25,7 @@ async def start_command(message: types.Message):
             parse_mode=types.ParseMode.HTML,
             reply_markup=markup_ru,
         )
-    elif message.from_user.language_code == 'en':
+    else:
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
@@ -38,7 +38,7 @@ async def help_command(message: types.Message):
         await message.answer(
             f'Привет, в этом боте ты можешь заказать самые вкусные бургеры в Ванадзоре'
         )
-    elif message.from_user.language_code == 'en':
+    else:
         await message.answer(
             f'Hello, here you can order the most delicious burgers in Vanadzor'
         )
@@ -60,7 +60,7 @@ async def menu(message: types.Message):
             f'Выбери категорию',
             reply_markup=markup_ru,
         )
-    if message.from_user.language_code == 'en':
+    else:
         await message.answer(
             f'Choose a category',
             reply_markup=markup_en,
@@ -68,14 +68,14 @@ async def menu(message: types.Message):
 
 
 async def burgers(message: types.Message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton('Cheeseburger')
     btn2 = types.KeyboardButton('Chickenburger')
     btn3 = types.KeyboardButton('BigMac')
-    markup.add(btn1, btn2, btn3)
+    markup_en.add(btn1, btn2, btn3)
     await message.answer(
         f'Choose a burger',
-        reply_markup=markup
+        reply_markup=markup_en,
     )
 
 
@@ -85,7 +85,10 @@ async def send_menu(message: types.Message):
     btn1 = types.InlineKeyboardButton('Add', callback_data='Add')
     btn2 = types.InlineKeyboardButton('Delete', callback_data='Delete')
     markup_en.add(btn1, btn2)
-    await message.answer_photo(dishes[1], f'{dishes[2]}\n{dishes[4]}\n{dishes[5]}', reply_markup=markup_en)
+    await message.answer_photo(
+        dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
+        reply_markup=markup_en,
+    )
 
 
 # async def send_menu(message: types.Message):
