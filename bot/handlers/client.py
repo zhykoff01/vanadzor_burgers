@@ -71,7 +71,7 @@ async def burgers(message: types.Message):
     markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton('Cheeseburger')
     btn2 = types.KeyboardButton('Chickenburger')
-    btn3 = types.KeyboardButton('BigMac')
+    btn3 = types.KeyboardButton('Bigmac')
     markup_en.add(btn1, btn2, btn3)
     await message.answer(
         f'Choose a burger',
@@ -103,6 +103,6 @@ def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(menu, lambda message: ('Make order', 'Сделать заказ').__contains__(message.text))
     dp.register_message_handler(burgers, lambda message: ('Burgers', 'Бургеры').__contains__(message.text))
     dp.register_message_handler(
-        send_menu, lambda message: ('Cheeseburger', 'Chickenburger', 'BigMac').__contains__(message.text)
+        send_menu, lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text)
     )
     # dp.register_message_handler(send_menu, commands=['pizza'])
