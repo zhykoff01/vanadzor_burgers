@@ -1,6 +1,5 @@
 import types
 from aiogram import types, Dispatcher
-from
 from db.repository import SqlRepository
 
 
