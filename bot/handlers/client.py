@@ -82,8 +82,8 @@ async def burgers(message: types.Message):
 async def send_menu(message: types.Message):
     dishes = await sqlRepository.extract_menu(message.text)
     markup_en = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton('Add')
-    btn2 = types.InlineKeyboardButton('Delete')
+    btn1 = types.InlineKeyboardButton('Add', callback_data='Add')
+    btn2 = types.InlineKeyboardButton('Delete', callback_data='Delete')
     markup_en.add(btn1, btn2)
     await message.answer_photo(dishes[1], f'{dishes[2]}\n{dishes[4]}\n{dishes[5]}', reply_markup=markup_en)
 
