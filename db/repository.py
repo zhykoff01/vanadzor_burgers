@@ -83,7 +83,7 @@ class SqlRepository:
     async def extract_menu(self, dish):
         cur = self.conn.cursor()
         try:
-            cur.execute("""SELECT * FROM menu WHERE name = '%s'""", str(dish))
+            cur.execute("""SELECT * FROM vb.menu WHERE name = ''""", str(dish))
             dishes = cur.fetchone()
             return dishes
         except (Exception, psycopg2.DatabaseError) as error:
