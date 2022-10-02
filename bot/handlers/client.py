@@ -81,8 +81,8 @@ async def burgers(message: types.Message):
 
 
 async def send_menu(message: types.Message):
-    dishes = await sqlRepository.extract_menu(message)
-    await message.answer(f'{dishes}')
+    dishes = await sqlRepository.extract_menu(message.text)
+    await message.answer(dishes)
 
 
 # async def send_menu(message: types.Message):
