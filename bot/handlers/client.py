@@ -1,7 +1,7 @@
 import types
 from aiogram import types, Dispatcher
+from
 from db.repository import SqlRepository
-from bot.config import bot
 
 
 sqlRepository = SqlRepository()
@@ -82,7 +82,11 @@ async def burgers(message: types.Message):
 
 async def send_menu(message: types.Message):
     dishes = await sqlRepository.extract_menu(message.text)
-    await message.answer(dishes)
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton('Add')
+    btn2 = types.InlineKeyboardButton('Delete')
+    markup.add(btn1, btn2)
+    await message.answer(dishes[0], dishes[1], dishes[3], dishes[4], reply_markup=markup)
 
 
 # async def send_menu(message: types.Message):
