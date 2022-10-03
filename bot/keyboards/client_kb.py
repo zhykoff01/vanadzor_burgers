@@ -2,7 +2,6 @@ from aiogram import types
 
 
 class KeyboardClient:
-
     def __init__(self, bot):
         self.bot = bot
 

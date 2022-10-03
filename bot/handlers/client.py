@@ -2,13 +2,15 @@ import types
 from aiogram import types, Dispatcher
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
+from bot.config import bot
 
 
 sqlRepository = SqlRepository()
+keyboardClient = KeyboardClient(bot)
 
 
 async def start_command(message: types.Message):
-    await KeyboardClient.main_menu(message.text)
+    await KeyboardClient.main_menu(bot, message.text)
     if not await sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
 
