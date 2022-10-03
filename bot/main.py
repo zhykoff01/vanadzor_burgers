@@ -16,8 +16,11 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-handlers.register_handler_client(dp)
-admin.register_handler_admin(dp)
+async def register_handlers():
+    await handlers.register_handler_client(dp)
+    admin.register_handler_admin(dp)
+
+register_handlers()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
