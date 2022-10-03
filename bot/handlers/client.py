@@ -6,7 +6,6 @@ from bot.config import bot
 
 
 sqlRepository = SqlRepository()
-keyboardClient = KeyboardClient(bot)
 
 
 async def start_command(message: types.Message):

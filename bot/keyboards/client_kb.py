@@ -2,9 +2,6 @@ from aiogram import types
 
 
 class KeyboardClient:
-    def __init__(self, bot):
-        self.bot = bot
-
     async def main_menu(self, message):
         markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
         markup_ru = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -17,16 +14,14 @@ class KeyboardClient:
         markup_en.add(btn1_en, btn2_en, btn3_en)
         markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
         if message.from_user.language_code == 'ru':
-            await self.bot.send_message(
-                message.from_user.chat_id,
+            await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
                 f'у нас ты можешь заказать самые вкусные бургеры',
                 parse_mode=types.ParseMode.HTML,
                 reply_markup=markup_ru,
             )
         else:
-            await self.bot.send_message(
-                message.from_user.chat_id,
+            await message.answer(
                 f'Hello, {message.from_user.get_mention(as_html=True)}, '
                 f'here you can order the most delicious burgers',
                 parse_mode=types.ParseMode.HTML,
