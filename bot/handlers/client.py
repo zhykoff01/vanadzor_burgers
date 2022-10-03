@@ -42,49 +42,34 @@ async def help_command(message: types.Message):
 
 
 async def menu(message: types.Message):
-    markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup_ru = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1_en = types.KeyboardButton('Burgers')
-    btn2_en = types.KeyboardButton('Pizza')
-    btn3_en = types.KeyboardButton('Drinks')
-    btn1_ru = types.KeyboardButton('Бургеры')
-    btn2_ru = types.KeyboardButton('Пицца')
-    btn3_ru = types.KeyboardButton('Напитки')
-    markup_en.add(btn1_en, btn2_en, btn3_en)
-    markup_ru.add(btn1_ru, btn2_ru, btn3_ru)
     if message.from_user.language_code == 'ru':
+        markup = await keyboardClient.menu_ru()
         await message.answer(
             f'Выбери категорию',
-            reply_markup=markup_ru,
+            reply_markup=markup,
         )
     else:
+        markup = await keyboardClient.menu_en()
         await message.answer(
             f'Choose a category',
-            reply_markup=markup_en,
+            reply_markup=markup,
         )
 
 
 async def burgers(message: types.Message):
-    markup_en = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton('Cheeseburger')
-    btn2 = types.KeyboardButton('Chickenburger')
-    btn3 = types.KeyboardButton('Bigmac')
-    markup_en.add(btn1, btn2, btn3)
+    markup = await keyboardClient.burgers()
     await message.answer(
         f'Choose a burger',
-        reply_markup=markup_en,
+        reply_markup=markup,
     )
 
 
 async def send_menu(message: types.Message):
     dishes = await sqlRepository.extract_menu(message.text)
-    markup_en = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton('Add', callback_data='Add')
-    btn2 = types.InlineKeyboardButton('Delete', callback_data='Delete')
-    markup_en.add(btn1, btn2)
+    markup = await keyboardClient.send_menu()
     await message.answer_photo(
         dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
-        reply_markup=markup_en,
+        reply_markup=markup,
     )
 
 
@@ -96,4 +81,3 @@ def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(
         send_menu, lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text)
     )
-    # dp.register_message_handler(send_menu, commands=['pizza'])
