@@ -1,8 +1,11 @@
 import logging
 import config
 from aiogram.utils.executor import start_webhook
-from handlers import client, admin
+from handlers.client import Handlers
+from handlers import admin
 from config import dp
+
+handlers = Handlers()
 
 
 async def on_startup(dispatcher):
@@ -13,7 +16,7 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-client.register_handler_client(dp)
+await handlers.register_handler_client(dp)
 admin.register_handler_admin(dp)
 
 if __name__ == '__main__':
