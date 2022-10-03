@@ -6,10 +6,26 @@ from bot.config import bot
 
 
 sqlRepository = SqlRepository()
+keyboardClient = KeyboardClient()
 
 
 async def start_command(message: types.Message):
-    await KeyboardClient.main_menu(bot, message)
+    if message.from_user.language_code == 'ru':
+        markup = await keyboardClient.main_menu_ru()
+        await message.answer(
+            f'Привет, {message.from_user.get_mention(as_html=True)}, '
+            f'у нас ты можешь заказать самые вкусные бургеры',
+            parse_mode=types.ParseMode.HTML,
+            reply_markup=markup,
+        )
+    else:
+        markup = await keyboardClient.main_menu_en()
+        await message.answer(
+            f'Hello, {message.from_user.get_mention(as_html=True)}, '
+            f'here you can order the most delicious burgers',
+            parse_mode=types.ParseMode.HTML,
+            reply_markup=markup,
+        )
     if not await sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
 
