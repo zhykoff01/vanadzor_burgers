@@ -10,7 +10,7 @@ keyboardClient = KeyboardClient(bot)
 
 
 async def start_command(message: types.Message):
-    await KeyboardClient.main_menu(bot, message.text)
+    await KeyboardClient.main_menu(bot, message)
     if not await sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
 
