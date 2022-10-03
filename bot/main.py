@@ -1,12 +1,8 @@
 import logging
 import config
-import asyncio
 from aiogram.utils.executor import start_webhook
-from handlers.client import Handlers
-from handlers import admin
+from handlers import admin, client
 from config import dp
-
-handlers = Handlers()
 
 
 async def on_startup(dispatcher):
@@ -17,11 +13,9 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-async def register_handlers():
-    await handlers.register_handler_client(dp)
-    admin.register_handler_admin(dp)
+client.register_handler_client(dp)
+admin.register_handler_admin(dp)
 
-asyncio.run(register_handlers())
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
