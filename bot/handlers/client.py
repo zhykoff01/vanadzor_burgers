@@ -10,20 +10,18 @@ keyboardClient = KeyboardClient()
 
 async def start_command(message: types.Message):
     if message.from_user.language_code == 'ru':
-        markup = await keyboardClient.main_menu_ru()
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, '
             f'у нас ты можешь заказать самые вкусные бургеры',
             parse_mode=types.ParseMode.HTML,
-            reply_markup=markup,
+            reply_markup=await keyboardClient.main_menu_ru(),
         )
     else:
-        markup = await keyboardClient.main_menu_en()
         await message.answer(
             f'Hello, {message.from_user.get_mention(as_html=True)}, '
             f'here you can order the most delicious burgers',
             parse_mode=types.ParseMode.HTML,
-            reply_markup=markup,
+            reply_markup=await keyboardClient.main_menu_en(),
         )
     if not await sqlRepository.is_user_exist(message.from_user.id):
         await sqlRepository.save_user(message.from_user.id, message.from_user.username, message.from_user.language_code)
@@ -42,16 +40,14 @@ async def help_command(message: types.Message):
 
 async def menu(message: types.Message):
     if message.from_user.language_code == 'ru':
-        markup = await keyboardClient.menu_ru()
         await message.answer(
             f'Выбери категорию',
-            reply_markup=markup,
+            reply_markup=await keyboardClient.menu_ru(),
         )
     else:
-        markup = await keyboardClient.menu_en()
         await message.answer(
             f'Choose a category',
-            reply_markup=markup,
+            reply_markup=await keyboardClient.menu_en(),
         )
 
 

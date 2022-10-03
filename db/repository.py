@@ -55,7 +55,7 @@ class SqlRepository:
     async def user_language_code(self, user_id):
         cur = self.conn.cursor()
         try:
-            cur.execute("""SELECT language_code FROM vb.users WHERE user_id = %s""", [int(user_id)])
+            cur.execute("""SELECT language_code FROM users WHERE user_id = %s""", [int(user_id)])
             language_code = cur.fetchone()
             return language_code
         except (Exception, psycopg2.DatabaseError) as error:
