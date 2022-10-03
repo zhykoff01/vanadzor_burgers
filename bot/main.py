@@ -20,7 +20,7 @@ async def register_handlers():
     await handlers.register_handler_client(dp)
     admin.register_handler_admin(dp)
 
-register_handlers()
+await register_handlers()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
