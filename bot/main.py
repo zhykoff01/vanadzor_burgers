@@ -21,6 +21,7 @@ async def register_handlers():
     await handlers.register_handler_client(dp)
     admin.register_handler_admin(dp)
 
+asyncio.run(register_handlers())
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,3 @@ if __name__ == '__main__':
         host=config.WEBAPP_HOST,
         port=config.WEBAPP_PORT,
     )
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(register_handlers())
-    loop.close()
