@@ -16,7 +16,7 @@ async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
 
-await handlers.register_handler_client(dp)
+handlers.register_handler_client(dp)
 admin.register_handler_admin(dp)
 
 if __name__ == '__main__':
