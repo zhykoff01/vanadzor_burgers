@@ -1,5 +1,6 @@
 import logging
 import config
+import asyncio
 from aiogram.utils.executor import start_webhook
 from handlers.client import Handlers
 from handlers import admin
@@ -32,4 +33,6 @@ if __name__ == '__main__':
         host=config.WEBAPP_HOST,
         port=config.WEBAPP_PORT,
     )
-    register_handlers()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(register_handlers())
+    loop.close()
