@@ -2,12 +2,9 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
-from bot.config import ID
+from bot.config import ADMIN_ID
 from db.repository import SqlRepository
 from bot.keyboards import admin_kb
-
-
-sqlRepository = SqlRepository()
 
 
 class FSMAdmin(StatesGroup):
@@ -19,8 +16,11 @@ class FSMAdmin(StatesGroup):
 
 
 class AdminHandlers:
+    sqlRepository = SqlRepository()
+    ID = ADMIN_ID
+
     async def cancel_handler(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             current_state = await state.get_state()
             if current_state is None:
                 return
@@ -28,47 +28,47 @@ class AdminHandlers:
             await message.reply('OK')
 
     async def admin(self, message: types.Message):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             await message.reply('Admin panel', reply_markup=admin_kb.button_case_admin)
 
     async def add(self, message: types.Message):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             await FSMAdmin.photo.set()
             await message.reply('Download photo')
 
     async def load_photo(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             async with state.proxy() as data:
                 data['photo'] = message.photo[0].file_id
             await FSMAdmin.next()
             await message.reply('Enter a title')
 
     async def load_name(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             async with state.proxy() as data:
                 data['name'] = message.text
             await FSMAdmin.next()
             await message.reply('Enter section')
 
     async def load_section(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             async with state.proxy() as data:
                 data['section'] = message.text
             await FSMAdmin.next()
             await message.reply('Enter description')
 
     async def load_description(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             async with state.proxy() as data:
                 data['description'] = message.text
             await FSMAdmin.next()
             await message.reply('Enter price')
 
     async def load_price(self, message: types.Message, state: FSMContext):
-        if message.from_user.id == ID:
+        if message.from_user.id == self.ID:
             async with state.proxy() as data:
                 data['price'] = int(message.text)
-            await sqlRepository.save_dishes(state)
+            await self.sqlRepository.save_dishes(state)
             await message.reply(f'Saved successfully: {data}')
             await state.finish()
 
