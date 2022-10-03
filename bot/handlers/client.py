@@ -9,7 +9,7 @@ keyboardClient = KeyboardClient()
 
 
 async def start_command(message: types.Message):
-    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Привет, {message.from_user.get_mention(as_html=True)}, '
             f'у нас ты можешь заказать самые вкусные бургеры',
@@ -28,7 +28,7 @@ async def start_command(message: types.Message):
 
 
 async def help_command(message: types.Message):
-    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Привет, в этом боте ты можешь заказать самые вкусные бургеры в Ванадзоре'
         )
@@ -39,7 +39,7 @@ async def help_command(message: types.Message):
 
 
 async def menu(message: types.Message):
-    if sqlRepository.user_language_code(message.from_user.id) == 'ru':
+    if await sqlRepository.user_language_code(message.from_user.id) == 'ru':
         await message.answer(
             f'Выбери категорию',
             reply_markup=await keyboardClient.menu_ru(),
