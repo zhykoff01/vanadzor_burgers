@@ -2,7 +2,6 @@ import types
 from aiogram import types, Dispatcher
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
-from bot.config import bot
 
 
 sqlRepository = SqlRepository()
