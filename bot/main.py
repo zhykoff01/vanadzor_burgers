@@ -20,9 +20,8 @@ async def register_handlers():
     await handlers.register_handler_client(dp)
     admin.register_handler_admin(dp)
 
-await register_handlers()
-
 if __name__ == '__main__':
+    await register_handlers()
     logging.basicConfig(level=logging.INFO)
     start_webhook(
         dispatcher=config.dp,
