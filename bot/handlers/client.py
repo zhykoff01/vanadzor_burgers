@@ -1,14 +1,13 @@
 import types
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
 
 
 class FSMClient(StatesGroup):
-    start = State()
-    help = State()
     menu = State()
     burgers = State()
     send_menu = State()
@@ -18,7 +17,7 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback_handler(self, message: types.Message, state: FSMContext):
+    async def rollback_handler(self, state: FSMContext):
         current_state = await state.get_state()
         if current_state is None:
             return
@@ -53,7 +52,6 @@ class ClientHandlers:
             await message.answer(
                 f'Hello, here you can order the most delicious burgers in Vanadzor'
             )
-        await FSMClient.menu.set()
 
     async def menu(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
@@ -93,7 +91,8 @@ class ClientHandlers:
         )
         dp.register_message_handler(
             self.rollback_handler,
-
+            Text(equals='back', ignore_case=True),
+            state='*',
         )
         dp.register_message_handler(
             self.start_command,
