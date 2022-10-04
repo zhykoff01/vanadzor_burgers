@@ -22,13 +22,13 @@ class ClientHandlers:
         current_state = await state.get_state()
         if current_state is None:
             return
-        await FSMClient.previous()
         if current_state == FSMClient.send_menu:
             markup = await self.keyboardClient.menu_en()
         await message.answer(
             f'You was in {current_state}, you came back, in {await state.get_state()}',
             reply_markup=markup,
         )
+        await FSMClient.previous()
 
     async def start_command(self, message: types.Message, state: FSMContext):
         await state.update_data(action=message.text)
