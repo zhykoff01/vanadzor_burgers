@@ -22,10 +22,14 @@ class ClientHandlers:
         current_state = await state.get_state()
         if current_state is None:
             return
-        if current_state == FSMClient.send_menu:
+        elif current_state == FSMClient.send_menu:
+            markup = await self.keyboardClient.burgers()
+        elif current_state == FSMClient.dish:
             markup = await self.keyboardClient.menu_en()
+        elif current_state == FSMClient.menu:
+            markup = await self.keyboardClient.main_menu_en()
         await message.answer(
-            f'You was in {current_state}, you came back, in {await state.get_state()}',
+            f'You came back',
             reply_markup=markup,
         )
         await FSMClient.previous()
