@@ -53,7 +53,7 @@ class ClientHandlers:
                 f'Hello, here you can order the most delicious burgers in Vanadzor'
             )
 
-    async def menu(self, message: types.Message):
+    async def menu(self, message: types.Message, state: FSMContext):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Выбери категорию',
@@ -74,14 +74,14 @@ class ClientHandlers:
         )
         await FSMClient.next()
 
-    async def send_menu(self, message: types.Message):
+    async def send_menu(self, message: types.Message, state: FSMContext):
         dishes = await self.sqlRepository.extract_menu(message.text)
         markup = await self.keyboardClient.send_menu()
         await message.answer_photo(
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await FSMClient.next()
+        await state.finish()
 
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
