@@ -17,29 +17,11 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback_handler(self, message: types.Message, state: FSMContext):
+    async def rollback_handler(self, state: FSMContext):
         current_state = await state.get_state()
-        await FSMClient.previous()
         if current_state is None:
             return
-        elif current_state == FSMClient.send_menu:
-            markup = await self.keyboardClient.burgers()
-            await message.answer(
-                f'You came back',
-                reply_markup=markup,
-            )
-        elif current_state == FSMClient.dish:
-            markup = await self.keyboardClient.menu_en()
-            await message.answer(
-                f'You came back',
-                reply_markup=markup,
-            )
-        elif current_state == FSMClient.menu:
-            markup = await self.keyboardClient.main_menu_en()
-            await message.answer(
-                f'You came back',
-                reply_markup=markup,
-            )
+        await FSMClient.previous()
 
     async def start_command(self, message: types.Message, state: FSMContext):
         await state.update_data(action=message.text)
@@ -131,7 +113,7 @@ class ClientHandlers:
         )
         dp.register_message_handler(
             self.rollback_handler,
-            Text(equals='Back', ignore_case=True),
+            Text(equals='back', ignore_case=True),
             state='*',
         )
         dp.register_message_handler(
