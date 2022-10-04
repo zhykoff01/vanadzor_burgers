@@ -18,20 +18,27 @@ class ClientHandlers:
     keyboardClient = KeyboardClient()
 
     async def rollback_handler(self, message: types.Message, state: FSMContext):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         current_state = await state.get_state()
         if current_state is None:
             return
         elif current_state == FSMClient.send_menu:
             markup = await self.keyboardClient.burgers()
+            await message.answer(
+                f'You came back',
+                reply_markup=markup,
+            )
         elif current_state == FSMClient.dish:
             markup = await self.keyboardClient.menu_en()
+            await message.answer(
+                f'You came back',
+                reply_markup=markup,
+            )
         elif current_state == FSMClient.menu:
             markup = await self.keyboardClient.main_menu_en()
-        await message.answer(
-            f'You came back',
-            reply_markup=markup,
-        )
+            await message.answer(
+                f'You came back',
+                reply_markup=markup,
+            )
         await FSMClient.previous()
 
     async def start_command(self, message: types.Message, state: FSMContext):
