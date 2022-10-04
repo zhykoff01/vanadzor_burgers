@@ -23,7 +23,7 @@ class ClientHandlers:
             return
         await FSMClient.previous()
         await message.answer(
-            f'You came back'
+            f'You came back, in {await state.get_state()}'
         )
 
     async def start_command(self, message: types.Message, state: FSMContext):
