@@ -19,6 +19,7 @@ class ClientHandlers:
 
     async def rollback_handler(self, message: types.Message, state: FSMContext):
         current_state = await state.get_state()
+        await FSMClient.previous()
         if current_state is None:
             return
         elif current_state == FSMClient.send_menu:
@@ -39,7 +40,6 @@ class ClientHandlers:
                 f'You came back',
                 reply_markup=markup,
             )
-        await FSMClient.previous()
 
     async def start_command(self, message: types.Message, state: FSMContext):
         await state.update_data(action=message.text)
