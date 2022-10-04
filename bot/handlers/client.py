@@ -17,11 +17,14 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback_handler(self, state: FSMContext):
+    async def rollback_handler(self, message: types.Message, state: FSMContext):
         current_state = await state.get_state()
         if current_state is None:
             return
         await FSMClient.previous()
+        await message.answer(
+            f'You came back'
+        )
 
     async def start_command(self, message: types.Message, state: FSMContext):
         await state.update_data(action=message.text)
