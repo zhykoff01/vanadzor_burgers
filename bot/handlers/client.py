@@ -86,12 +86,12 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.rollback_handler,
+            lambda message: 'Back'.__contains__(message.text),
             state='*',
-            commands=['back'],
         )
         dp.register_message_handler(
             self.rollback_handler,
-            Text(equals='back', ignore_case=True),
+            Text(equals='Back', ignore_case=True),
             state='*',
         )
         dp.register_message_handler(

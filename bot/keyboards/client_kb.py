@@ -23,7 +23,8 @@ class KeyboardClient:
         btn1 = types.KeyboardButton('Бургеры')
         btn2 = types.KeyboardButton('Пицца')
         btn3 = types.KeyboardButton('Напитки')
-        markup.add(btn1, btn2, btn3)
+        btn4 = types.KeyboardButton('Назад')
+        markup.add(btn1, btn2, btn3, btn4)
         return markup
 
     async def menu_en(self):
@@ -31,7 +32,8 @@ class KeyboardClient:
         btn1 = types.KeyboardButton('Burgers')
         btn2 = types.KeyboardButton('Pizza')
         btn3 = types.KeyboardButton('Drinks')
-        markup.add(btn1, btn2, btn3)
+        btn4 = types.KeyboardButton('Back')
+        markup.add(btn1, btn2, btn3, btn4)
         return markup
 
     async def burgers(self):
@@ -39,7 +41,8 @@ class KeyboardClient:
         btn1 = types.KeyboardButton('Cheeseburger')
         btn2 = types.KeyboardButton('Chickenburger')
         btn3 = types.KeyboardButton('Bigmac')
-        markup.add(btn1, btn2, btn3)
+        btn4 = types.KeyboardButton('Back')
+        markup.add(btn1, btn2, btn3, btn4)
         return markup
 
     async def send_menu(self):
