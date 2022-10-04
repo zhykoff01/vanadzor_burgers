@@ -18,12 +18,16 @@ class ClientHandlers:
     keyboardClient = KeyboardClient()
 
     async def rollback_handler(self, message: types.Message, state: FSMContext):
+        markup = None
         current_state = await state.get_state()
         if current_state is None:
             return
         await FSMClient.previous()
+        if current_state == FSMClient.send_menu:
+            markup = await self.keyboardClient.menu_en()
         await message.answer(
-            f'You was in {current_state}, you came back, in {await state.get_state()}'
+            f'You was in {current_state}, you came back, in {await state.get_state()}',
+            reply_markup=markup,
         )
 
     async def start_command(self, message: types.Message, state: FSMContext):
