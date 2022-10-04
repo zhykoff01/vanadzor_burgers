@@ -18,6 +18,7 @@ class ClientHandlers:
     keyboardClient = KeyboardClient()
 
     async def rollback_handler(self, message: types.Message, state: FSMContext):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         current_state = await state.get_state()
         if current_state is None:
             return
