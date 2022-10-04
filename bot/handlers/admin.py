@@ -74,8 +74,8 @@ class AdminHandlers:
 
     def register_handler_admin(self, dp: Dispatcher):
         dp.register_message_handler(self.cancel_handler, state='*', commands='Cancel')
-        dp.register_message_handler(self.admin, commands='Admin')
         dp.register_message_handler(self.cancel_handler, Text(equals='Cancel', ignore_case=True), state='*')
+        dp.register_message_handler(self.admin, commands='Admin')
         dp.register_message_handler(self.add, commands='Add', state=None)
         dp.register_message_handler(self.load_photo, content_types='photo', state=FSMAdmin.photo)
         dp.register_message_handler(self.load_name, state=FSMAdmin.name)
