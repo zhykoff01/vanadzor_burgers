@@ -45,6 +45,24 @@ class KeyboardClient:
         markup.add(btn1, btn2, btn3, btn4)
         return markup
 
+    async def pizza(self):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Pizza 1')
+        btn2 = types.KeyboardButton('Pizza 2')
+        btn3 = types.KeyboardButton('Pizza 3')
+        btn4 = types.KeyboardButton('Back')
+        markup.add(btn1, btn2, btn3, btn4)
+        return markup
+
+    async def drinks(self):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Drink 1')
+        btn2 = types.KeyboardButton('Drink 2')
+        btn3 = types.KeyboardButton('Drink 3')
+        btn4 = types.KeyboardButton('Back')
+        markup.add(btn1, btn2, btn3, btn4)
+        return markup
+
     async def send_menu(self):
         markup = types.InlineKeyboardMarkup()
         btn1 = types.InlineKeyboardButton('Add', callback_data='Add')

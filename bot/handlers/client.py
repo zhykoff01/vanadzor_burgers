@@ -9,7 +9,7 @@ from bot.keyboards.client_kb import KeyboardClient
 
 class FSMClient(StatesGroup):
     menu = State()
-    burgers = State()
+    dish = State()
     send_menu = State()
 
 
@@ -23,7 +23,8 @@ class ClientHandlers:
             return
         await FSMClient.previous()
 
-    async def start_command(self, message: types.Message):
+    async def start_command(self, message: types.Message, state: FSMContext):
+        await state.update_data(action=message.text)
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
@@ -54,6 +55,7 @@ class ClientHandlers:
             )
 
     async def menu(self, message: types.Message, state: FSMContext):
+        await state.update_data(category=message.text)
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Выбери категорию',
@@ -66,7 +68,8 @@ class ClientHandlers:
             )
         await FSMClient.next()
 
-    async def burgers(self, message: types.Message):
+    async def burgers(self, message: types.Message, state: FSMContext):
+        await state.update_data(subcategory=message.text)
         markup = await self.keyboardClient.burgers()
         await message.answer(
             f'Choose a burger',
@@ -74,7 +77,26 @@ class ClientHandlers:
         )
         await FSMClient.next()
 
+    async def pizza(self, message: types.Message, state: FSMContext):
+        await state.update_data(subcategory=message.text)
+        markup = await self.keyboardClient.pizza()
+        await message.answer(
+            f'Choose a pizza',
+            reply_markup=markup,
+        )
+        await FSMClient.next()
+
+    async def drinks(self, message: types.Message, state: FSMContext):
+        await state.update_data(subcategory=message.text)
+        markup = await self.keyboardClient.drinks()
+        await message.answer(
+            f'Choose a drink',
+            reply_markup=markup,
+        )
+        await FSMClient.next()
+
     async def send_menu(self, message: types.Message, state: FSMContext):
+        await state.update_data(dish=message.text)
         dishes = await self.sqlRepository.extract_menu(message.text)
         markup = await self.keyboardClient.send_menu()
         await message.answer_photo(
@@ -110,7 +132,17 @@ class ClientHandlers:
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state=FSMClient.burgers,
+            state=FSMClient.dish,
+        )
+        dp.register_message_handler(
+            self.pizza,
+            lambda message: 'Pizza'.__contains__(message.text),
+            state=FSMClient.dish,
+        )
+        dp.register_message_handler(
+            self.burgers,
+            lambda message: 'Drink'.__contains__(message.text),
+            state=FSMClient.dish,
         )
         dp.register_message_handler(
             self.send_menu,
