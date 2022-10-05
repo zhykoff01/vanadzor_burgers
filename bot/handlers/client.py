@@ -88,13 +88,13 @@ class ClientHandlers:
             reply_markup=markup,
         )
         await state.update_data(four=message.text)
-        await FSMClient.next()
+        await state.finish()
 
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
             commands=['start', 'help'],
-            state=None,
+            state='*',
         )
         dp.register_message_handler(
             self.menu,
@@ -119,5 +119,4 @@ class ClientHandlers:
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
-            state='five',
         )
