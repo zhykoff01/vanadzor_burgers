@@ -1,6 +1,5 @@
 import types
 from aiogram import types, Dispatcher
-from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
@@ -41,6 +40,7 @@ class ClientHandlers:
         if not await self.sqlRepository.is_user_exist(message.from_user.id):
             await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
                                                message.from_user.language_code)
+        await FSMClient.state_1.set()
 
     async def menu(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
@@ -53,6 +53,7 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
+        await FSMClient.next()
 
     async def burgers(self, message: types.Message):
         markup = await self.keyboardClient.burgers()
@@ -94,14 +95,17 @@ class ClientHandlers:
         dp.register_message_handler(
             self.start_command,
             commands=['start', 'help'],
+            state='*',
         )
         dp.register_message_handler(
             self.menu,
             lambda message: ('Make order', 'Сделать заказ').__contains__(message.text),
+            state='state_1',
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
+            state='state_2',
         )
         dp.register_message_handler(
             self.pizza,
