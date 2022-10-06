@@ -109,7 +109,7 @@ class ClientHandlers:
         )
         dp.register_message_handler(
             self.rollback,
-            Text(equals='Cancel', ignore_case=True),
+            Text(equals='Back', ignore_case=True),
             state='*',
         )
         dp.register_message_handler(
