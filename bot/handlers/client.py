@@ -1,5 +1,6 @@
 import types
 from aiogram import types, Dispatcher
+from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
@@ -92,6 +93,7 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
+            Text(equals='Start', ignore_case=True),
             commands=['start', 'help'],
         )
         dp.register_message_handler(
