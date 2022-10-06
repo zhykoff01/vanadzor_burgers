@@ -18,6 +18,20 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
+    async def rollback(self, state: FSMContext, message: types.Message):
+        current_state = state.get_state()
+        await FSMClient.previous()
+        if current_state == 'five':
+            pass
+        elif current_state == 'four':
+            pass
+        elif current_state == 'three':
+            pass
+        elif current_state == 'two':
+            pass
+        elif current_state == 'one':
+            pass
+
     async def start_command(self, state: FSMContext, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
@@ -36,7 +50,6 @@ class ClientHandlers:
         if not await self.sqlRepository.is_user_exist(message.from_user.id):
             await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
                                                message.from_user.language_code)
-        await state.update_data(one=message.text)
         await FSMClient.one.set()
 
     async def menu(self, state: FSMContext, message: types.Message):
@@ -50,8 +63,8 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await state.update_data(two=message.text)
-        await FSMClient.next()
+        await state.update_data(one=message.text)
+        await FSMClient.two.set()
 
     async def burgers(self, state: FSMContext, message: types.Message):
         markup = await self.keyboardClient.burgers()
@@ -59,8 +72,8 @@ class ClientHandlers:
             f'Choose a burger',
             reply_markup=markup,
         )
-        await state.update_data(three=message.text)
-        await FSMClient.next()
+        await state.update_data(two=message.text)
+        await FSMClient.three.set()
 
     async def pizza(self, state: FSMContext, message: types.Message):
         markup = await self.keyboardClient.pizza()
@@ -68,8 +81,8 @@ class ClientHandlers:
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await state.update_data(three=message.text)
-        await FSMClient.next()
+        await state.update_data(two=message.text)
+        await FSMClient.three.set()
 
     async def drinks(self, state: FSMContext, message: types.Message):
         markup = await self.keyboardClient.drinks()
@@ -77,8 +90,8 @@ class ClientHandlers:
             f'Choose a drink',
             reply_markup=markup,
         )
-        await state.update_data(three=message.text)
-        await FSMClient.next()
+        await state.update_data(two=message.text)
+        await FSMClient.three.set()
 
     async def send_menu(self, state: FSMContext, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
@@ -87,7 +100,7 @@ class ClientHandlers:
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await state.update_data(four=message.text)
+        await state.update_data(three=message.text)
         await state.finish()
 
     def register_handler_client(self, dp: Dispatcher):
@@ -109,14 +122,15 @@ class ClientHandlers:
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
-            state='three',
+            state='two',
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: 'Drink'.__contains__(message.text),
-            state='four',
+            state='two',
         )
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
+            state='three',
         )
