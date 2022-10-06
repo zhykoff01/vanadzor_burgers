@@ -19,9 +19,8 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback(self, state: FSMContext, message: types.Message):
-        current_state = await state.get_state()
-        await state.finish()
+    async def rollback(self, message: types.Message):
+        current_state = await FSMClient.previous()
         if current_state == FSMClient.five:
             pass
         elif current_state == FSMClient.four:
@@ -66,7 +65,7 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await FSMClient.next()  # 1
+        await FSMClient.two.set()  # 1
 
     async def burgers(self, message: types.Message):
         markup = await self.keyboardClient.burgers()
@@ -74,7 +73,7 @@ class ClientHandlers:
             f'Choose a burger',
             reply_markup=markup,
         )
-        await FSMClient.next()  # 2
+        await FSMClient.three.set()  # 2
 
     async def pizza(self, message: types.Message):
         markup = await self.keyboardClient.pizza()
@@ -82,7 +81,7 @@ class ClientHandlers:
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await FSMClient.next()  # 2
+        await FSMClient.three.set()  # 2
 
     async def drinks(self, message: types.Message):
         markup = await self.keyboardClient.drinks()
@@ -90,7 +89,7 @@ class ClientHandlers:
             f'Choose a drink',
             reply_markup=markup,
         )
-        await FSMClient.next()  # 2
+        await FSMClient.three.set()  # 2
 
     async def send_menu(self, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
@@ -99,7 +98,7 @@ class ClientHandlers:
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await FSMClient.next()  # 3
+        await FSMClient.four.set()  # 3
 
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
