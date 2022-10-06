@@ -7,7 +7,7 @@ from bot.keyboards.client_kb import KeyboardClient
 
 
 class FSMClient(StatesGroup):
-    state_1 = State()
+    state_menu = State()
     state_2 = State()
     state_3 = State()
 
@@ -41,7 +41,7 @@ class ClientHandlers:
         if not await self.sqlRepository.is_user_exist(message.from_user.id):
             await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
                                                message.from_user.language_code)
-        await FSMClient.state_1.set()
+        await FSMClient.state_menu.set()
 
     async def menu(self, message: types.Message, state: FSMContext):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
@@ -101,7 +101,7 @@ class ClientHandlers:
         dp.register_message_handler(
             self.menu,
             lambda message: ('Make order', 'Сделать заказ').__contains__(message.text),
-            state='state_1',
+            state='state_menu',
         )
         dp.register_message_handler(
             self.burgers,
@@ -111,10 +111,12 @@ class ClientHandlers:
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
+            state='state_2',
         )
         dp.register_message_handler(
-            self.burgers,
+            self.drinks,
             lambda message: 'Drink'.__contains__(message.text),
+            state='state_2',
         )
         dp.register_message_handler(
             self.send_menu,
