@@ -123,7 +123,7 @@ class ClientHandlers:
         dp.register_message_handler(
             self.menu,
             lambda message: ('Make order', 'Сделать заказ').__contains__(message.text),
-            state='one',
+            state=FSMClient.one,
         )
         dp.register_message_handler(
             self.burgers,
