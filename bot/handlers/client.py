@@ -8,6 +8,13 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
+    async def back(self, message: types.Message):
+        user_position = ClientHandlers
+        if user_position == 'start_command':
+            pass
+        elif user_position:
+            pass
+
     async def start_command(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
