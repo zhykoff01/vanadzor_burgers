@@ -123,20 +123,20 @@ class ClientHandlers:
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state='two',
+            state=FSMClient.two,
         )
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
-            state='two',
+            state=FSMClient.two,
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: 'Drink'.__contains__(message.text),
-            state='two',
+            state=FSMClient.two,
         )
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
-            state='three',
+            state=FSMClient.three,
         )
