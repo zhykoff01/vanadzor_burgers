@@ -33,7 +33,7 @@ class ClientHandlers:
         elif current_state == 'one':
             pass
 
-    async def start_command(self, state: FSMContext, message: types.Message):
+    async def start_command(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
