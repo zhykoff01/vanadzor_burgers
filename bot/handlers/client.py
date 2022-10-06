@@ -1,5 +1,6 @@
 import types
 from aiogram import types, Dispatcher
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
@@ -42,7 +43,7 @@ class ClientHandlers:
                                                message.from_user.language_code)
         await FSMClient.state_1.set()
 
-    async def menu(self, message: types.Message):
+    async def menu(self, message: types.Message, state: FSMContext):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Выбери категорию',
