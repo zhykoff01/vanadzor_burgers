@@ -66,32 +66,29 @@ class ClientHandlers:
             )
         await FSMClient.next()
 
-    async def burgers(self, state: FSMContext, message: types.Message):
+    async def burgers(self, message: types.Message):
         markup = await self.keyboardClient.burgers()
         await message.answer(
             f'Choose a burger',
             reply_markup=markup,
         )
-        await state.update_data(two=message.text)
-        await FSMClient.three.set()
+        await FSMClient.next()
 
-    async def pizza(self, state: FSMContext, message: types.Message):
+    async def pizza(self, message: types.Message):
         markup = await self.keyboardClient.pizza()
         await message.answer(
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await state.update_data(two=message.text)
-        await FSMClient.three.set()
+        await FSMClient.next()
 
-    async def drinks(self, state: FSMContext, message: types.Message):
+    async def drinks(self, message: types.Message):
         markup = await self.keyboardClient.drinks()
         await message.answer(
             f'Choose a drink',
             reply_markup=markup,
         )
-        await state.update_data(two=message.text)
-        await FSMClient.three.set()
+        await FSMClient.next()
 
     async def send_menu(self, state: FSMContext, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
@@ -100,7 +97,6 @@ class ClientHandlers:
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await state.update_data(three=message.text)
         await state.finish()
 
     def register_handler_client(self, dp: Dispatcher):
