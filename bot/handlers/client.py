@@ -11,6 +11,7 @@ class FSMClient(StatesGroup):
     state_burgers = State()
     state_pizza = State()
     state_drinks = State()
+    state_send_menu = State()
 
 
 class ClientHandlers:
@@ -122,6 +123,7 @@ class ClientHandlers:
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
+            state=FSMClient.state_send_menu,
         )
         dp.register_message_handler(
             self.filter,
