@@ -20,8 +20,7 @@ class ClientHandlers:
     keyboardClient = KeyboardClient()
 
     async def rollback(self, message: types.Message):
-        await FSMClient.previous()
-        current_state = FSMClient.states.get_state()
+        current_state = await FSMClient.previous()
         if current_state == FSMClient.five:
             pass
         elif current_state == FSMClient.four:
@@ -34,6 +33,7 @@ class ClientHandlers:
             await self.menu(message)
         elif current_state is None:
             await self.start_command(message)
+        await FSMClient.previous()
 
     async def start_command(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
