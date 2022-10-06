@@ -101,12 +101,12 @@ class ClientHandlers:
         dp.register_message_handler(
             self.menu,
             lambda message: ('Make order', 'Сделать заказ').__contains__(message.text),
-            state='state_menu',
+            state=FSMClient.state_menu,
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state='state_2',
+            state=FSMClient.state_2,
         )
         dp.register_message_handler(
             self.pizza,
