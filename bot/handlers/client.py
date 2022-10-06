@@ -19,22 +19,21 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback(self, message: types.Message):
-        current_state = await FSMClient.previous()
+    async def rollback(self, state: FSMContext, message: types.Message):
+        current_state = await state.get_state()
         if current_state == FSMClient.five:
-            pass
+            await self.send_menu(message)
         elif current_state == FSMClient.four:
             pass
         elif current_state == FSMClient.three:
-            await self.send_menu(message)
-        elif current_state == FSMClient.two:
-            pass
-        elif current_state == FSMClient.one:
             await self.menu(message)
-        elif current_state is None:
+        elif current_state == FSMClient.two:
             await self.start_command(message)
+        elif current_state == FSMClient.one:
+            pass
 
     async def start_command(self, message: types.Message):
+        await FSMClient.one.set()  # 1
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
@@ -52,9 +51,9 @@ class ClientHandlers:
         if not await self.sqlRepository.is_user_exist(message.from_user.id):
             await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
                                                message.from_user.language_code)
-        await FSMClient.one.set()  # 0
 
     async def menu(self, message: types.Message):
+        await FSMClient.two.set()  # 2
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Выбери категорию',
@@ -65,40 +64,39 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await FSMClient.two.set()  # 1
 
     async def burgers(self, message: types.Message):
+        await FSMClient.three.set()  # 3
         markup = await self.keyboardClient.burgers()
         await message.answer(
             f'Choose a burger',
             reply_markup=markup,
         )
-        await FSMClient.three.set()  # 2
 
     async def pizza(self, message: types.Message):
+        await FSMClient.three.set()  # 3
         markup = await self.keyboardClient.pizza()
         await message.answer(
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await FSMClient.three.set()  # 2
 
     async def drinks(self, message: types.Message):
+        await FSMClient.three.set()  # 3
         markup = await self.keyboardClient.drinks()
         await message.answer(
             f'Choose a drink',
             reply_markup=markup,
         )
-        await FSMClient.three.set()  # 2
 
     async def send_menu(self, message: types.Message):
+        await FSMClient.four.set()  # 4
         dishes = await self.sqlRepository.extract_menu(message.text)
         markup = await self.keyboardClient.send_menu()
         await message.answer_photo(
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await FSMClient.four.set()  # 3
 
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
