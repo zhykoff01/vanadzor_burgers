@@ -19,9 +19,9 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def rollback(self, state: FSMContext, message: types.Message):
+    async def rollback(self, message: types.Message):
         await FSMClient.previous()
-        current_state = state.get_state()
+        current_state = FSMClient.states.get_state()
         if current_state == FSMClient.five:
             pass
         elif current_state == FSMClient.four:
