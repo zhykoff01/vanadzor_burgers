@@ -8,8 +8,9 @@ from bot.keyboards.client_kb import KeyboardClient
 
 class FSMClient(StatesGroup):
     state_menu = State()
-    state_2 = State()
-    state_3 = State()
+    state_burgers = State()
+    state_pizza = State()
+    state_drinks = State()
 
 
 class ClientHandlers:
@@ -54,7 +55,7 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await FSMClient.next()
+        await eval(f'FSMClient.{message.text.lower()}.set()')
 
     async def burgers(self, message: types.Message):
         markup = await self.keyboardClient.burgers()
@@ -106,17 +107,17 @@ class ClientHandlers:
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state=FSMClient.state_2,
+            state=FSMClient.state_burgers,
         )
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
-            state='state_2',
+            state=FSMClient.state_pizza,
         )
         dp.register_message_handler(
             self.drinks,
             lambda message: 'Drink'.__contains__(message.text),
-            state='state_2',
+            state=FSMClient.state_drinks,
         )
         dp.register_message_handler(
             self.send_menu,
