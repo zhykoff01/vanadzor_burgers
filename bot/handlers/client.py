@@ -53,7 +53,7 @@ class ClientHandlers:
                                                message.from_user.language_code)
         await FSMClient.one.set()
 
-    async def menu(self, state: FSMContext, message: types.Message):
+    async def menu(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Выбери категорию',
@@ -64,7 +64,6 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await state.update_data(one=message.text)
         await FSMClient.next()
 
     async def burgers(self, state: FSMContext, message: types.Message):
