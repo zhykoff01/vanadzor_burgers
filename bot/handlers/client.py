@@ -97,7 +97,7 @@ class ClientHandlers:
             dishes[1], f'Title: {dishes[2]}\nDescription: {dishes[4]}\nPrice: {dishes[5]}',
             reply_markup=markup,
         )
-        await state.finish()
+        await FSMContext.finish(state)
 
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
