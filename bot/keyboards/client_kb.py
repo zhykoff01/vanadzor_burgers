@@ -72,6 +72,6 @@ class KeyboardClient:
 
     async def filter(self):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton('Start')
+        btn1 = types.KeyboardButton('start')
         markup.add(btn1)
         return markup

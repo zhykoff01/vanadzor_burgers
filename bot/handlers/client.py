@@ -93,7 +93,6 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
-            Text(equals='Start', ignore_case=True),
             commands=['start', 'help'],
         )
         dp.register_message_handler(
