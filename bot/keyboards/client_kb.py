@@ -69,3 +69,9 @@ class KeyboardClient:
         btn2 = types.InlineKeyboardButton('Delete', callback_data='Delete')
         markup.add(btn1, btn2)
         return markup
+
+    async def filter(self):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Start')
+        markup.add(btn1)
+        return markup

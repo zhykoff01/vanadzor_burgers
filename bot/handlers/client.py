@@ -1,7 +1,14 @@
 import types
 from aiogram import types, Dispatcher
+from aiogram.dispatcher.filters.state import StatesGroup, State
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
+
+
+class FSMClient(StatesGroup):
+    state_1 = State()
+    state_2 = State()
+    state_3 = State()
 
 
 class ClientHandlers:
@@ -75,6 +82,13 @@ class ClientHandlers:
             reply_markup=markup,
         )
 
+    async def filter(self, message: types.Message):
+        markup = await self.keyboardClient.filter()
+        await message.answer(
+            f'Send "start" to continue',
+            reply_markup=markup,
+        )
+
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
@@ -99,4 +113,7 @@ class ClientHandlers:
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
+        )
+        dp.register_message_handler(
+            self.filter,
         )
