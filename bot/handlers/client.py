@@ -1,6 +1,5 @@
 import types
 from aiogram import types, Dispatcher
-from aiogram.dispatcher.filters import Text
 from db.repository import SqlRepository
 from bot.keyboards.client_kb import KeyboardClient
 
