@@ -22,15 +22,15 @@ class ClientHandlers:
     async def rollback(self, state: FSMContext, message: types.Message):
         await FSMClient.previous()
         current_state = state.get_state()
-        if current_state == 'five':
+        if current_state == FSMClient.five:
             pass
-        elif current_state == 'four':
+        elif current_state == FSMClient.four:
             pass
-        elif current_state == 'three':
+        elif current_state == FSMClient.three:
             await self.send_menu(message)
-        elif current_state == 'two':
+        elif current_state == FSMClient.two:
             pass
-        elif current_state == 'one':
+        elif current_state == FSMClient.one:
             await self.menu(message)
         elif current_state is None:
             await self.start_command(message)
