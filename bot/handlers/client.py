@@ -90,7 +90,7 @@ class ClientHandlers:
         )
         await FSMClient.next()
 
-    async def send_menu(self, state: FSMContext, message: types.Message):
+    async def send_menu(self, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
         markup = await self.keyboardClient.send_menu()
         await message.answer_photo(
