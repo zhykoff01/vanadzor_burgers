@@ -27,16 +27,13 @@ class ClientHandlers:
         elif current_state == FSMClient.four:
             pass
         elif current_state == FSMClient.three:
-            await FSMClient.three.set()
             await self.send_menu(message)
         elif current_state == FSMClient.two:
             pass
         elif current_state == FSMClient.one:
-            await FSMClient.one.set()
             await self.menu(message)
         elif current_state is None:
             await self.start_command(message)
-        await FSMClient.previous()
 
     async def start_command(self, message: types.Message):
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
@@ -123,25 +120,30 @@ class ClientHandlers:
         dp.register_message_handler(
             self.menu,
             lambda message: ('Make order', 'Сделать заказ').__contains__(message.text),
-            state=FSMClient.one,
+            # state=FSMClient.one,
+            state='*',
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state=FSMClient.two,
+            # state=FSMClient.two,
+            state='*',
         )
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
-            state=FSMClient.two,
+            # state=FSMClient.two,
+            state='*',
         )
         dp.register_message_handler(
             self.burgers,
             lambda message: 'Drink'.__contains__(message.text),
-            state=FSMClient.two,
+            # state=FSMClient.two,
+            state='*',
         )
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
-            state=FSMClient.three,
+            # state=FSMClient.three,
+            state='*',
         )
