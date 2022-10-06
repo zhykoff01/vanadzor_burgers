@@ -65,7 +65,7 @@ class ClientHandlers:
                 reply_markup=await self.keyboardClient.menu_en(),
             )
         await state.update_data(one=message.text)
-        await FSMClient.two.set()
+        await FSMClient.next()
 
     async def burgers(self, state: FSMContext, message: types.Message):
         markup = await self.keyboardClient.burgers()
