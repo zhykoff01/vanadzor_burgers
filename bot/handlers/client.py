@@ -65,7 +65,7 @@ class ClientHandlers:
             f'Choose a burger',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.{message.text.lower()}.set()')
+        await eval(f'FSMClient.state_{message.text.lower()}.set()')
 
     async def pizza(self, message: types.Message):
         markup = await self.keyboardClient.pizza()
@@ -73,7 +73,7 @@ class ClientHandlers:
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.{message.text.lower()}.set()')
+        await eval(f'FSMClient.state_{message.text.lower()}.set()')
 
     async def drinks(self, message: types.Message):
         markup = await self.keyboardClient.drinks()
@@ -81,7 +81,7 @@ class ClientHandlers:
             f'Choose a drink',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.{message.text.lower()}.set()')
+        await eval(f'FSMClient.state_{message.text.lower()}.set()')
 
     async def send_menu(self, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
