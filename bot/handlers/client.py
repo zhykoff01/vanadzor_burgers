@@ -9,9 +9,7 @@ from bot.keyboards.client_kb import KeyboardClient
 class FSMClient(StatesGroup):
     state_menu = State()
     state_second_menu = State()
-    state_burgers = State()
-    state_pizza = State()
-    state_drinks = State()
+    state_food = State()
     state_send_menu = State()
 
 
@@ -65,7 +63,7 @@ class ClientHandlers:
             f'Choose a burger',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.state_{message.text.lower()}.set()')
+        await FSMClient.state_food.set()
 
     async def pizza(self, message: types.Message):
         markup = await self.keyboardClient.pizza()
@@ -73,7 +71,7 @@ class ClientHandlers:
             f'Choose a pizza',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.state_{message.text.lower()}.set()')
+        await FSMClient.state_food.set()
 
     async def drinks(self, message: types.Message):
         markup = await self.keyboardClient.drinks()
@@ -81,7 +79,7 @@ class ClientHandlers:
             f'Choose a drink',
             reply_markup=markup,
         )
-        await eval(f'FSMClient.state_{message.text.lower()}.set()')
+        await FSMClient.state_food.set()
 
     async def send_menu(self, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
@@ -127,7 +125,7 @@ class ClientHandlers:
         dp.register_message_handler(
             self.send_menu,
             lambda message: ('Cheeseburger', 'Chickenburger', 'Bigmac').__contains__(message.text),
-            state=FSMClient.state_send_menu,
+            state=FSMClient.state_food,
         )
         dp.register_message_handler(
             self.filter,
