@@ -8,6 +8,7 @@ from bot.keyboards.client_kb import KeyboardClient
 
 class FSMClient(StatesGroup):
     state_menu = State()
+    state_second_menu = State()
     state_burgers = State()
     state_pizza = State()
     state_drinks = State()
@@ -56,7 +57,7 @@ class ClientHandlers:
                 f'Choose a category',
                 reply_markup=await self.keyboardClient.menu_en(),
             )
-        await eval(f'FSMClient.{message.text.lower()}.set()')
+        await FSMClient.state_second_menu.set()
 
     async def burgers(self, message: types.Message):
         markup = await self.keyboardClient.burgers()
@@ -64,7 +65,7 @@ class ClientHandlers:
             f'Choose a burger',
             reply_markup=markup,
         )
-
+        await eval(f'FSMClient.{message.text.lower()}.set()')
 
     async def pizza(self, message: types.Message):
         markup = await self.keyboardClient.pizza()
@@ -72,6 +73,7 @@ class ClientHandlers:
             f'Choose a pizza',
             reply_markup=markup,
         )
+        await eval(f'FSMClient.{message.text.lower()}.set()')
 
     async def drinks(self, message: types.Message):
         markup = await self.keyboardClient.drinks()
@@ -79,6 +81,7 @@ class ClientHandlers:
             f'Choose a drink',
             reply_markup=markup,
         )
+        await eval(f'FSMClient.{message.text.lower()}.set()')
 
     async def send_menu(self, message: types.Message):
         dishes = await self.sqlRepository.extract_menu(message.text)
@@ -109,17 +112,17 @@ class ClientHandlers:
         dp.register_message_handler(
             self.burgers,
             lambda message: ('Burgers', 'Бургеры').__contains__(message.text),
-            state=FSMClient.state_burgers,
+            state=FSMClient.state_second_menu,
         )
         dp.register_message_handler(
             self.pizza,
             lambda message: 'Pizza'.__contains__(message.text),
-            state=FSMClient.state_pizza,
+            state=FSMClient.state_second_menu,
         )
         dp.register_message_handler(
             self.drinks,
             lambda message: 'Drink'.__contains__(message.text),
-            state=FSMClient.state_drinks,
+            state=FSMClient.state_second_menu,
         )
         dp.register_message_handler(
             self.send_menu,
