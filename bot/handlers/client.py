@@ -17,10 +17,11 @@ class ClientHandlers:
     sqlRepository = SqlRepository()
     keyboardClient = KeyboardClient()
 
-    async def back(self, message: types.Message):
-        user_position = ClientHandlers
-        if user_position == 'start_command':
-            pass
+    async def back(self, message: types.Message, state: FSMContext):
+        user_position = state.get_state()
+        if user_position is FSMClient.state_menu:
+            await state.reset_state()
+            await self.start_command(message)
         elif user_position:
             pass
 
@@ -99,7 +100,7 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
-            commands=['start', 'help'],
+            commands=['start', 'help', 'back'],
             state='*',
         )
         dp.register_message_handler(
