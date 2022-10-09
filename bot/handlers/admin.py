@@ -27,8 +27,9 @@ class AdminHandlers:
             await state.finish()
             await message.reply('OK')
 
-    async def admin(self, message: types.Message):
+    async def admin(self, message: types.Message, state: FSMContext):
         if message.from_user.id == self.ID:
+            await state.finish()
             await message.reply('Admin panel', reply_markup=admin_kb.button_case_admin)
 
     async def add(self, message: types.Message):
