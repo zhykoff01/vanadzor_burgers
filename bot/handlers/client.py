@@ -136,7 +136,7 @@ class ClientHandlers:
         )
         dp.register_message_handler(
             self.phone_number,
-            lambda message: message.startswith('+374'),
+            lambda message: message.text.startswith('+374'),
             state=FSMClient.state_phone_number,
         )
         dp.register_message_handler(
