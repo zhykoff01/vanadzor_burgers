@@ -83,7 +83,7 @@ class SqlRepository:
         cur = self.conn.cursor()
         try:
             cur.execute(
-                """INSERT INTO users (phone_number) values (%s) WHERE user_id = %s""",
+                """UPDATE users SET phone_number = %s WHERE user_id = %s""",
                 [str(phone_number), int(user_id)]
             )
             self.conn.commit()
