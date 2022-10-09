@@ -108,7 +108,8 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
-            lambda message: ('start', 'help').__contains__(message.text),
+            lambda message: 'Main menu'.__contains__(message.text),
+            commands=('start', 'help'),
             state='*',
         )
         dp.register_message_handler(
