@@ -62,7 +62,7 @@ class ClientHandlers:
                                                message.from_user.language_code)
         await FSMClient.state_phone_number.set()
 
-    async def phone_number(self, message: types.Message):
+    async def phone_number(self, message: types.Message, state: FSMContext):
         await self.sqlRepository.save_phone_number(message.text.strip(), message.from_user.id)
         user = await self.sqlRepository.extract_user(message.from_user.id)
         await message.answer(
