@@ -79,10 +79,13 @@ class SqlRepository:
         finally:
             cur.close()
 
-    async def save_phone_number(self, phone_number):
+    async def save_phone_number(self, phone_number, user_id):
         cur = self.conn.cursor()
         try:
-            cur.execute("""INSERT INTO users (phone_number) values (%s)""", [str(phone_number)])
+            cur.execute(
+                """INSERT INTO users (phone_number) values (%s) WHERE user_id = %s""",
+                [str(phone_number), int(user_id)]
+            )
             self.conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
@@ -96,6 +99,18 @@ class SqlRepository:
             cur.execute("""SELECT * FROM menu WHERE name = %s""", [str(dish)])
             dishes = cur.fetchone()
             return dishes
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            self.conn.rollback()
+        finally:
+            cur.close()
+
+    async def extract_user(self, user_id):
+        cur = self.conn.cursor()
+        try:
+            cur.execute("""SELECT * FROM users WHERE user_id = %s""", [int(user_id)])
+            user = cur.fetchone()
+            return user
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             self.conn.rollback()

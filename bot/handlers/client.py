@@ -63,9 +63,15 @@ class ClientHandlers:
         await FSMClient.state_phone_number.set()
 
     async def phone_number(self, message: types.Message):
-        await self.sqlRepository.save_phone_number(message.text.strip())
+        await self.sqlRepository.save_phone_number(message.text.strip(), message.from_user.id)
+        user = await self.sqlRepository.extract_user(message.from_user.id)
         await message.answer(
-            f'You are registered',
+            f'You are registered,\n'
+            f'your id = {user[0]},\n'
+            f'your user id = {user[1]},\n'
+            f'your username = {user[2]},\n'
+            f'your language code = {user[3]},\n'
+            f'your phone number = {user[4]}.',
             reply_markup=await self.keyboardClient.send_phone_number(),
         )
         await FSMClient.state_menu.set()
