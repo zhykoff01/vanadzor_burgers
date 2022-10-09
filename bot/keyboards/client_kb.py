@@ -8,6 +8,24 @@ class KeyboardClient:
         markup.add(btn1)
         return markup
 
+    async def update_user_en(self):
+        markup = types.InlineKeyboardMarkup()
+        btn1 = types.InlineKeyboardButton('All right, continue', callback_data='Continue')
+        btn2 = types.InlineKeyboardButton('Change name', callback_data='Change name')
+        btn3 = types.InlineKeyboardButton('Change language', callback_data='Change language')
+        btn4 = types.InlineKeyboardButton('Change number', callback_data='Change number')
+        markup.add(btn1, btn2, btn3, btn4)
+        return markup
+
+    async def update_user_ru(self):
+        markup = types.InlineKeyboardMarkup()
+        btn1 = types.InlineKeyboardButton('Все верно, продолжить', callback_data='Continue')
+        btn2 = types.InlineKeyboardButton('Изменить имя', callback_data='Change name')
+        btn3 = types.InlineKeyboardButton('Изменить язык', callback_data='Change language')
+        btn4 = types.InlineKeyboardButton('Изменить номер', callback_data='Change number')
+        markup.add(btn1, btn2, btn3, btn4)
+        return markup
+
     async def main_menu_ru(self):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton('Сделать заказ')

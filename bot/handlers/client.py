@@ -35,32 +35,39 @@ class ClientHandlers:
     #         pass
 
     async def start_command(self, message: types.Message):
+        if not await self.sqlRepository.is_user_exist(message.from_user.id):
+            await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
+                                               message.from_user.language_code)
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
                 f'у нас ты можешь заказать самые вкусные бургеры.',
                 parse_mode=types.ParseMode.HTML,
             )
-            await message.answer(
-                f'Пожалуйста, введите свой номер телефона, чтобы зарегистрироваться!'
-                f'Например, +374 xx xxxxxx',
-                reply_markup=await self.keyboardClient.send_phone_number(),
-            )
+            if not await self.sqlRepository.is_user_phone_number_exist(message.from_user.id):
+                await message.answer(
+                    f'Пожалуйста, введите свой номер телефона, чтобы зарегистрироваться!'
+                    f'Например, +374 xx xxxxxx',
+                    reply_markup=await self.keyboardClient.send_phone_number(),
+                )
+                await FSMClient.state_phone_number.set()
+            else:
+                await FSMClient.state_menu.set()
         else:
             await message.answer(
                 f'Hello, {message.from_user.get_mention(as_html=True)}, '
                 f'here you can order the most delicious burgers.',
                 parse_mode=types.ParseMode.HTML,
             )
-            await message.answer(
-                f'Please enter your phone number to register!'
-                f'For example, +374 xx xxxxxx',
-                reply_markup=await self.keyboardClient.send_phone_number(),
-            )
-        if not await self.sqlRepository.is_user_exist(message.from_user.id):
-            await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
-                                               message.from_user.language_code)
-        await FSMClient.state_phone_number.set()
+            if not await self.sqlRepository.is_user_phone_number_exist(message.from_user.id):
+                await message.answer(
+                    f'Please enter your phone number to register!'
+                    f'For example, +374 xx xxxxxx',
+                    reply_markup=await self.keyboardClient.send_phone_number(),
+                )
+                await FSMClient.state_phone_number.set()
+            else:
+                await FSMClient.state_menu.set()
 
     async def phone_number(self, message: types.Message, state: FSMContext):
         await self.sqlRepository.save_phone_number(message.text.replace(' ', ''), message.from_user.id)
@@ -71,7 +78,7 @@ class ClientHandlers:
                 f'Ваше имя {user[2]},\n'
                 f'Ваш язык русский,\n'
                 f'Ваш номер телефона {user[4]}.',
-                reply_markup=await self.keyboardClient.main_menu_ru(),
+                reply_markup=await self.keyboardClient.update_user_ru(),
             )
         else:
             await message.answer(
@@ -79,7 +86,7 @@ class ClientHandlers:
                 f'Your name is {user[2]},\n'
                 f'Your language is English,\n'
                 f'Your phone number is {user[4]}.',
-                reply_markup=await self.keyboardClient.main_menu_en(),
+                reply_markup=await self.keyboardClient.update_user_en(),
             )
         await FSMClient.state_menu.set()
 

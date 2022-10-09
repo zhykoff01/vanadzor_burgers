@@ -38,6 +38,17 @@ class SqlRepository:
         finally:
             cur.close()
 
+    async def is_user_phone_number_exist(self, user_id):
+        cur = self.conn.cursor()
+        try:
+            cur.execute("""SELECT phone_number FROM users WHERE user_id = %s""", [int(user_id)])
+            phone_number = cur.fetchone()
+            return phone_number is not None
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        finally:
+            cur.close()
+
     async def save_user(self, user_id, username, language_code):
         cur = self.conn.cursor()
         try:
