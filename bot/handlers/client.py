@@ -65,15 +65,22 @@ class ClientHandlers:
     async def phone_number(self, message: types.Message, state: FSMContext):
         await self.sqlRepository.save_phone_number(message.text.replace(' ', ''), message.from_user.id)
         user = await self.sqlRepository.extract_user(message.from_user.id)
-        await message.answer(
-            f'You are registered,\n'
-            f'your id = {user[0]},\n'
-            f'your user id = {user[1]},\n'
-            f'your username = {user[2]},\n'
-            f'your language code = {user[3]},\n'
-            f'your phone number = {user[4]}.',
-            reply_markup=await self.keyboardClient.send_phone_number(),
-        )
+        if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
+            await message.answer(
+                f'Вы зарегистрированы,\n'
+                f'Ваше имя {user[2]},\n'
+                f'Ваш язык русский,\n'
+                f'Ваш номер телефона {user[4]}.',
+                reply_markup=await self.keyboardClient.main_menu_ru(),
+            )
+        else:
+            await message.answer(
+                f'You are registered,\n'
+                f'Your name is {user[2]},\n'
+                f'Your language is English,\n'
+                f'Your phone number is {user[4]}.',
+                reply_markup=await self.keyboardClient.main_menu_en(),
+            )
         await FSMClient.state_menu.set()
 
     async def menu(self, message: types.Message):
