@@ -16,9 +16,8 @@ async def on_startup(dispatcher):
 async def on_shutdown(dispatcher):
     await config.bot.delete_webhook()
 
-
-clientHandlers.register_handler_client(dp)
 adminHandlers.register_handler_admin(dp)
+clientHandlers.register_handler_client(dp)
 
 
 if __name__ == '__main__':
