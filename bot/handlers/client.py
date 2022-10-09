@@ -23,7 +23,7 @@ class ClientHandlers:
     #     if current_state is None:
     #         return
     #     await state.finish()
-
+    #
     # async def back(self, message: types.Message, state: FSMContext):
     #     user_position = await state.get_state()
     #     if user_position is None:
