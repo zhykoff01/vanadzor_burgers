@@ -7,6 +7,7 @@ from bot.keyboards.client_kb import KeyboardClient
 
 
 class FSMClient(StatesGroup):
+    state_phone_number = State()
     state_menu = State()
     state_second_menu = State()
     state_food = State()
@@ -37,20 +38,36 @@ class ClientHandlers:
         if await self.sqlRepository.user_language_code(message.from_user.id) == 'ru':
             await message.answer(
                 f'Привет, {message.from_user.get_mention(as_html=True)}, '
-                f'у нас ты можешь заказать самые вкусные бургеры',
+                f'у нас ты можешь заказать самые вкусные бургеры.',
                 parse_mode=types.ParseMode.HTML,
-                reply_markup=await self.keyboardClient.main_menu_ru(),
+            )
+            await message.answer(
+                f'Пожалуйста, введите свой номер телефона, чтобы зарегистрироваться!'
+                f'Например, +374 xx xxxxxx',
+                reply_markup=await self.keyboardClient.send_phone_number(),
             )
         else:
             await message.answer(
                 f'Hello, {message.from_user.get_mention(as_html=True)}, '
-                f'here you can order the most delicious burgers',
+                f'here you can order the most delicious burgers.',
                 parse_mode=types.ParseMode.HTML,
-                reply_markup=await self.keyboardClient.main_menu_en(),
+            )
+            await message.answer(
+                f'Please enter your phone number to register!'
+                f'For example, +374 xx xxxxxx',
+                reply_markup=await self.keyboardClient.send_phone_number(),
             )
         if not await self.sqlRepository.is_user_exist(message.from_user.id):
             await self.sqlRepository.save_user(message.from_user.id, message.from_user.username,
                                                message.from_user.language_code)
+        await FSMClient.state_phone_number.set()
+
+    async def phone_number(self, message: types.Message):
+        await self.sqlRepository.save_phone_number(message.text.strip())
+        await message.answer(
+            f'You are registered',
+            reply_markup=await self.keyboardClient.send_phone_number(),
+        )
         await FSMClient.state_menu.set()
 
     async def menu(self, message: types.Message):
@@ -108,9 +125,13 @@ class ClientHandlers:
     def register_handler_client(self, dp: Dispatcher):
         dp.register_message_handler(
             self.start_command,
-            # lambda message: 'Main menu'.__contains__(message.text),
             commands=('start', 'help'),
             state='*',
+        )
+        dp.register_message_handler(
+            self.phone_number,
+            lambda message: '+1234567890'.__contains__(message.text),
+            state=FSMClient.state_phone_number,
         )
         dp.register_message_handler(
             self.menu,

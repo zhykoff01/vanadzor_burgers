@@ -2,6 +2,12 @@ from aiogram import types
 
 
 class KeyboardClient:
+    async def send_phone_number(self):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Send phone number', request_contact=True)
+        markup.add(btn1)
+        return markup
+
     async def main_menu_ru(self):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton('Сделать заказ')

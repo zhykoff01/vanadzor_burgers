@@ -79,6 +79,17 @@ class SqlRepository:
         finally:
             cur.close()
 
+    async def save_phone_number(self, phone_number):
+        cur = self.conn.cursor()
+        try:
+            cur.execute("""INSERT INTO users (phone_number) values (%s)""", [str(phone_number)])
+            self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            self.conn.rollback()
+        finally:
+            cur.close()
+
     async def extract_menu(self, dish):
         cur = self.conn.cursor()
         try:
